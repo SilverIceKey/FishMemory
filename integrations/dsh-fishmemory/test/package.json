@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "description": "Compatibility shim only: Node 24's `--test` positional argument does not expand a directory, so `node --test integrations/dsh-fishmemory/test/` resolves this directory through `main` and runs the test file. Prefer `node --test \"integrations/dsh-fishmemory/test/*.test.mjs\"` or root `node --test`; add new test files as `*.test.mjs` and run them with the glob form.",
+  "type": "module",
+  "main": "./archive.test.mjs"
+}
+
