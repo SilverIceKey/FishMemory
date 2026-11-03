@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.fishmemory/
+*.sqlite*
+*.token
+*.key
+*.log
+fishmemory.local.json
+config.local.json
+reports/dsh-source/
+reports/identifier-live-snapshot.json
+reports/mcp-calls.jsonl
