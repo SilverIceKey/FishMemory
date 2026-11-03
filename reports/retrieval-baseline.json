@@ -1,0 +1,1394 @@
+{
+  "summary": {
+    "cases": 12,
+    "exact": 5,
+    "oracle_exact": 4,
+    "candidate_covered": 4,
+    "positive_cases": 10,
+    "baseline_covered": 10,
+    "local_calls": 36,
+    "local_prompt_tokens": 7117,
+    "local_completion_tokens": 644,
+    "online_calls": 0,
+    "online_input_tokens": 0,
+    "online_output_tokens": 0,
+    "median_recall_ms": 882.5,
+    "python": "3.11.9",
+    "sqlite": "3.45.1"
+  },
+  "rows": [
+    {
+      "case": "language",
+      "query": "我现在偏好用什么语言编写后端？",
+      "gold": [
+        "e01"
+      ],
+      "baseline_candidate_ids": [
+        "e01",
+        "e14",
+        "e11",
+        "e02",
+        "e03"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e01",
+            "topic": "个人偏好",
+            "text": "用户明确说：编写后端服务时优先使用Python。",
+            "time": "2026-10-01T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "个人偏好",
+              "keywords": [
+                "语言",
+                "后端",
+                "开发"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e01"
+            ],
+            "selected": [
+              "e01"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e01"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 687.0,
+            "usage": {
+              "completion_tokens": 27,
+              "prompt_tokens": 127,
+              "total_tokens": 154,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 127,
+              "prompt_ms": 126.622,
+              "prompt_per_token_ms": 0.997023622047244,
+              "prompt_per_second": 1002.9852632244002,
+              "predicted_n": 27,
+              "predicted_ms": 518.869,
+              "predicted_per_token_ms": 19.956500000000002,
+              "predicted_per_second": 50.10898704682685
+            }
+          },
+          {
+            "elapsed_ms": 297.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 156,
+              "total_tokens": 166,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 156,
+              "prompt_ms": 113.406,
+              "prompt_per_token_ms": 0.7269615384615385,
+              "prompt_per_second": 1375.588593196127,
+              "predicted_n": 10,
+              "predicted_ms": 148.118,
+              "predicted_per_token_ms": 16.457555555555555,
+              "predicted_per_second": 60.76236514130626
+            }
+          }
+        ],
+        "elapsed_ms": 984.0,
+        "trace_id": "66f3a9ff-c59b-4edd-ba1f-05e0e1ba40e4"
+      },
+      "end_to_end": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "candidate_coverage": true,
+      "oracle_selection": [
+        "e01"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "case": "review",
+      "query": "审查方案时我要求先讲哪部分？",
+      "gold": [
+        "e03"
+      ],
+      "baseline_candidate_ids": [
+        "e03",
+        "e05",
+        "e04"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e08",
+            "topic": "部署记录",
+            "text": "海鸥项目上次发布失败是磁盘空间不足，清理旧日志后恢复。",
+            "time": "2026-10-08T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "部署记录",
+              "keywords": [
+                "部署",
+                "记录"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e09",
+              "e08"
+            ],
+            "selected": [
+              "e08"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e08",
+          "e09"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 609.0,
+            "usage": {
+              "completion_tokens": 24,
+              "prompt_tokens": 129,
+              "total_tokens": 153,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 55,
+              "prompt_ms": 142.76,
+              "prompt_per_token_ms": 2.5956363636363635,
+              "prompt_per_second": 385.2619781451387,
+              "predicted_n": 24,
+              "predicted_ms": 447.554,
+              "predicted_per_token_ms": 19.45886956521739,
+              "predicted_per_second": 51.390446739387876
+            }
+          },
+          {
+            "elapsed_ms": 281.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 227,
+              "total_tokens": 237,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 227,
+              "prompt_ms": 113.728,
+              "prompt_per_token_ms": 0.5010044052863436,
+              "prompt_per_second": 1995.990433314575,
+              "predicted_n": 10,
+              "predicted_ms": 142.185,
+              "predicted_per_token_ms": 15.798333333333334,
+              "predicted_per_second": 63.29781622534023
+            }
+          }
+        ],
+        "elapsed_ms": 890.0,
+        "trace_id": "51a4c388-503e-49b1-ad08-5f89cc1d66ad"
+      },
+      "end_to_end": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "candidate_coverage": false,
+      "oracle_selection": [
+        "e01"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "reason",
+      "query": "海鸥项目为什么放弃方案A？",
+      "gold": [
+        "e04"
+      ],
+      "baseline_candidate_ids": [
+        "e04",
+        "e05",
+        "e06",
+        "e07",
+        "e12",
+        "e03",
+        "e08",
+        "e13"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e04",
+            "topic": "海鸥项目",
+            "text": "海鸥项目放弃方案A，因为其内存占用过高，超过部署机器容量。",
+            "time": "2026-10-04T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "海鸥项目",
+              "keywords": [
+                "方案A",
+                "放弃",
+                "部署记录"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e04"
+            ],
+            "selected": [
+              "e04"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e04"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 578.0,
+            "usage": {
+              "completion_tokens": 37,
+              "prompt_tokens": 126,
+              "total_tokens": 163,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 103.296,
+              "prompt_per_token_ms": 1.9864615384615385,
+              "prompt_per_second": 503.4076827757125,
+              "predicted_n": 37,
+              "predicted_ms": 394.641,
+              "predicted_per_token_ms": 10.962250000000001,
+              "predicted_per_second": 91.22214873771352
+            }
+          },
+          {
+            "elapsed_ms": 297.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 159,
+              "total_tokens": 169,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 95,
+              "prompt_ms": 122.057,
+              "prompt_per_token_ms": 1.2848105263157894,
+              "prompt_per_second": 778.3248809982222,
+              "predicted_n": 10,
+              "predicted_ms": 144.59,
+              "predicted_per_token_ms": 16.065555555555555,
+              "predicted_per_second": 62.244968531710356
+            }
+          }
+        ],
+        "elapsed_ms": 875.0,
+        "trace_id": "4a2cf172-d7b7-4e0b-bf86-cd383d646aa5"
+      },
+      "end_to_end": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "candidate_coverage": true,
+      "oracle_selection": [
+        "e04"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "case": "similar",
+      "query": "海燕项目取消A方案的原因是什么？",
+      "gold": [
+        "e05"
+      ],
+      "baseline_candidate_ids": [
+        "e05",
+        "e04",
+        "e13",
+        "e09",
+        "e03",
+        "e06",
+        "e07",
+        "e12"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "not_found",
+        "items": [],
+        "trace": [
+          {
+            "plan": {
+              "topic": "海燕项目",
+              "keywords": [
+                "取消",
+                "原因"
+              ],
+              "historical": false
+            },
+            "candidates": [],
+            "selected": []
+          },
+          {
+            "plan": {
+              "topic": "海燕项目",
+              "keywords": [
+                "取消",
+                "原因"
+              ],
+              "historical": false
+            },
+            "candidates": [],
+            "selected": []
+          }
+        ],
+        "candidate_ids": [],
+        "calls": [
+          {
+            "elapsed_ms": 500.0,
+            "usage": {
+              "completion_tokens": 32,
+              "prompt_tokens": 127,
+              "total_tokens": 159,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 53,
+              "prompt_ms": 112.952,
+              "prompt_per_token_ms": 2.131169811320755,
+              "prompt_per_second": 469.22586585452234,
+              "predicted_n": 32,
+              "predicted_ms": 335.676,
+              "predicted_per_token_ms": 10.82825806451613,
+              "predicted_per_second": 92.35095747089456
+            }
+          },
+          {
+            "elapsed_ms": 250.0,
+            "usage": {
+              "completion_tokens": 23,
+              "prompt_tokens": 160,
+              "total_tokens": 183,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 86,
+              "prompt_ms": 104.166,
+              "prompt_per_token_ms": 1.211232558139535,
+              "prompt_per_second": 825.6052838738168,
+              "predicted_n": 23,
+              "predicted_ms": 125.98,
+              "predicted_per_token_ms": 5.7263636363636365,
+              "predicted_per_second": 174.6308937926655
+            }
+          }
+        ],
+        "elapsed_ms": 750.0,
+        "trace_id": "62f193da-2dab-40f6-ae49-273018309817"
+      },
+      "end_to_end": {
+        "exact": false,
+        "precision": 0,
+        "recall": 0.0
+      },
+      "candidate_coverage": false,
+      "oracle_selection": [
+        "e05"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "case": "current",
+      "query": "海鸥项目现在用什么数据库？",
+      "gold": [
+        "e07"
+      ],
+      "baseline_candidate_ids": [
+        "e06",
+        "e07",
+        "e12",
+        "e04",
+        "e08",
+        "e13",
+        "e05",
+        "e09"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e08",
+            "topic": "部署记录",
+            "text": "海鸥项目上次发布失败是磁盘空间不足，清理旧日志后恢复。",
+            "time": "2026-10-08T00:00:00Z",
+            "state": "current"
+          },
+          {
+            "id": "e09",
+            "topic": "部署记录",
+            "text": "海燕项目上次发布失败是证书过期，更新证书后恢复。",
+            "time": "2026-10-09T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "部署记录",
+              "keywords": [
+                "海鸥项目",
+                "数据库",
+                "部署"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e08",
+              "e09"
+            ],
+            "selected": [
+              "e08",
+              "e09"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e08",
+          "e09"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 704.0,
+            "usage": {
+              "completion_tokens": 28,
+              "prompt_tokens": 125,
+              "total_tokens": 153,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 51,
+              "prompt_ms": 124.464,
+              "prompt_per_token_ms": 2.440470588235294,
+              "prompt_per_second": 409.75703817971464,
+              "predicted_n": 28,
+              "predicted_ms": 539.283,
+              "predicted_per_token_ms": 19.973444444444446,
+              "predicted_per_second": 50.06647715577906
+            }
+          },
+          {
+            "elapsed_ms": 312.0,
+            "usage": {
+              "completion_tokens": 15,
+              "prompt_tokens": 223,
+              "total_tokens": 238,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 223,
+              "prompt_ms": 111.705,
+              "prompt_per_token_ms": 0.5009192825112108,
+              "prompt_per_second": 1996.3296181907704,
+              "predicted_n": 15,
+              "predicted_ms": 161.083,
+              "predicted_per_token_ms": 11.505928571428571,
+              "predicted_per_second": 86.91171632015792
+            }
+          }
+        ],
+        "elapsed_ms": 1016.0,
+        "trace_id": "d2ac1198-6f1c-48a5-95c6-a91eb9daa912"
+      },
+      "end_to_end": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "candidate_coverage": false,
+      "oracle_selection": [
+        "e07",
+        "e12"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.5,
+        "recall": 1.0
+      }
+    },
+    {
+      "case": "past",
+      "query": "海鸥项目最初选的数据库是什么？",
+      "gold": [
+        "e06"
+      ],
+      "baseline_candidate_ids": [
+        "e06",
+        "e07",
+        "e12",
+        "e04",
+        "e08",
+        "e13",
+        "e05",
+        "e09"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e04",
+            "topic": "海鸥项目",
+            "text": "海鸥项目放弃方案A，因为其内存占用过高，超过部署机器容量。",
+            "time": "2026-10-04T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "海鸥项目",
+              "keywords": [
+                "数据库",
+                "部署记录"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e04"
+            ],
+            "selected": [
+              "e04"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e04"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 641.0,
+            "usage": {
+              "completion_tokens": 25,
+              "prompt_tokens": 126,
+              "total_tokens": 151,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 112.121,
+              "prompt_per_token_ms": 2.1561730769230767,
+              "prompt_per_second": 463.784661214224,
+              "predicted_n": 25,
+              "predicted_ms": 488.595,
+              "predicted_per_token_ms": 20.358125,
+              "predicted_per_second": 49.12043717189083
+            }
+          },
+          {
+            "elapsed_ms": 328.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 159,
+              "total_tokens": 169,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 95,
+              "prompt_ms": 123.082,
+              "prompt_per_token_ms": 1.2955999999999999,
+              "prompt_per_second": 771.8431614695894,
+              "predicted_n": 10,
+              "predicted_ms": 160.547,
+              "predicted_per_token_ms": 17.838555555555555,
+              "predicted_per_second": 56.058350514179644
+            }
+          }
+        ],
+        "elapsed_ms": 969.0,
+        "trace_id": "3a062d52-c86c-49df-9272-dc1584bc7473"
+      },
+      "end_to_end": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "candidate_coverage": false,
+      "oracle_selection": [
+        "e07"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "change",
+      "query": "海鸥项目数据库从什么改成了什么？",
+      "gold": [
+        "e06",
+        "e07"
+      ],
+      "baseline_candidate_ids": [
+        "e06",
+        "e07",
+        "e12",
+        "e04",
+        "e08",
+        "e13",
+        "e05",
+        "e09"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e04",
+            "topic": "海鸥项目",
+            "text": "海鸥项目放弃方案A，因为其内存占用过高，超过部署机器容量。",
+            "time": "2026-10-04T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "海鸥项目",
+              "keywords": [
+                "数据库迁移",
+                "数据源变更",
+                "部署流程"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e04"
+            ],
+            "selected": [
+              "e04"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e04"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 657.0,
+            "usage": {
+              "completion_tokens": 31,
+              "prompt_tokens": 128,
+              "total_tokens": 159,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 54,
+              "prompt_ms": 110.69,
+              "prompt_per_token_ms": 2.0498148148148148,
+              "prompt_per_second": 487.8489475110669,
+              "predicted_n": 31,
+              "predicted_ms": 503.892,
+              "predicted_per_token_ms": 16.7964,
+              "predicted_per_second": 59.53656735967231
+            }
+          },
+          {
+            "elapsed_ms": 328.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 161,
+              "total_tokens": 171,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 97,
+              "prompt_ms": 127.228,
+              "prompt_per_token_ms": 1.3116288659793813,
+              "prompt_per_second": 762.4107900776559,
+              "predicted_n": 10,
+              "predicted_ms": 136.275,
+              "predicted_per_token_ms": 15.141666666666667,
+              "predicted_per_second": 66.04292790313704
+            }
+          }
+        ],
+        "elapsed_ms": 985.0,
+        "trace_id": "8fcb8635-b652-4469-b788-7bad88f47336"
+      },
+      "end_to_end": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "candidate_coverage": false,
+      "oracle_selection": [
+        "e07",
+        "e04"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.5,
+        "recall": 0.5
+      }
+    },
+    {
+      "case": "incident",
+      "query": "海鸥项目上次发布故障怎么解决的？",
+      "gold": [
+        "e08"
+      ],
+      "baseline_candidate_ids": [
+        "e08",
+        "e09",
+        "e06",
+        "e07",
+        "e12",
+        "e04",
+        "e13",
+        "e05"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e04",
+            "topic": "海鸥项目",
+            "text": "海鸥项目放弃方案A，因为其内存占用过高，超过部署机器容量。",
+            "time": "2026-10-04T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "海鸥项目",
+              "keywords": [
+                "部署记录",
+                "故障处理"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e04"
+            ],
+            "selected": [
+              "e04"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e04"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 531.0,
+            "usage": {
+              "completion_tokens": 26,
+              "prompt_tokens": 127,
+              "total_tokens": 153,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 53,
+              "prompt_ms": 121.909,
+              "prompt_per_token_ms": 2.300169811320755,
+              "prompt_per_second": 434.750510626779,
+              "predicted_n": 26,
+              "predicted_ms": 373.574,
+              "predicted_per_token_ms": 14.942960000000001,
+              "predicted_per_second": 66.92114547586287
+            }
+          },
+          {
+            "elapsed_ms": 312.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 160,
+              "total_tokens": 170,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 96,
+              "prompt_ms": 109.172,
+              "prompt_per_token_ms": 1.1372083333333334,
+              "prompt_per_second": 879.3463525446085,
+              "predicted_n": 10,
+              "predicted_ms": 144.881,
+              "predicted_per_token_ms": 16.09788888888889,
+              "predicted_per_second": 62.119946714890155
+            }
+          }
+        ],
+        "elapsed_ms": 843.0,
+        "trace_id": "0a3b2609-0395-4e97-9c6a-d38ef494d42e"
+      },
+      "end_to_end": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "candidate_coverage": false,
+      "oracle_selection": [
+        "e04"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "backup",
+      "query": "海燕项目每天几点做备份？",
+      "gold": [
+        "e13"
+      ],
+      "baseline_candidate_ids": [
+        "e13",
+        "e05",
+        "e09",
+        "e12",
+        "e06",
+        "e07",
+        "e04",
+        "e08"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e13",
+            "topic": "海燕项目",
+            "text": "海燕项目把每晚备份时间定在凌晨三点。",
+            "time": "2026-10-13T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "海燕项目",
+              "keywords": [
+                "备份",
+                "时间",
+                "每日"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e13"
+            ],
+            "selected": [
+              "e13"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e13"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 625.0,
+            "usage": {
+              "completion_tokens": 27,
+              "prompt_tokens": 126,
+              "total_tokens": 153,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 104.152,
+              "prompt_per_token_ms": 2.002923076923077,
+              "prompt_per_second": 499.2702972578538,
+              "predicted_n": 27,
+              "predicted_ms": 478.326,
+              "predicted_per_token_ms": 18.39715384615385,
+              "predicted_per_second": 54.35623403285625
+            }
+          },
+          {
+            "elapsed_ms": 250.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 154,
+              "total_tokens": 164,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 154,
+              "prompt_ms": 70.549,
+              "prompt_per_token_ms": 0.45811038961038963,
+              "prompt_per_second": 2182.879984124509,
+              "predicted_n": 10,
+              "predicted_ms": 131.454,
+              "predicted_per_token_ms": 14.606000000000002,
+              "predicted_per_second": 68.46501437765302
+            }
+          }
+        ],
+        "elapsed_ms": 875.0,
+        "trace_id": "067400ff-95fc-4b93-a04b-4bc79a56601e"
+      },
+      "end_to_end": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "candidate_coverage": true,
+      "oracle_selection": [
+        "e13"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "case": "missing",
+      "query": "我家住在哪座城市？",
+      "gold": [],
+      "baseline_candidate_ids": [
+        "e10"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "not_found",
+        "items": [],
+        "trace": [
+          {
+            "plan": {
+              "topic": "个人偏好",
+              "keywords": [
+                "城市",
+                "居住"
+              ],
+              "historical": false
+            },
+            "candidates": [],
+            "selected": []
+          },
+          {
+            "plan": {
+              "topic": "个人偏好",
+              "keywords": [
+                "城市",
+                "居住"
+              ],
+              "historical": false
+            },
+            "candidates": [],
+            "selected": []
+          }
+        ],
+        "candidate_ids": [],
+        "calls": [
+          {
+            "elapsed_ms": 547.0,
+            "usage": {
+              "completion_tokens": 24,
+              "prompt_tokens": 124,
+              "total_tokens": 148,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 50,
+              "prompt_ms": 117.189,
+              "prompt_per_token_ms": 2.3437799999999998,
+              "prompt_per_second": 426.66120540323755,
+              "predicted_n": 24,
+              "predicted_ms": 392.287,
+              "predicted_per_token_ms": 17.05595652173913,
+              "predicted_per_second": 58.63054345415475
+            }
+          },
+          {
+            "elapsed_ms": 266.0,
+            "usage": {
+              "completion_tokens": 23,
+              "prompt_tokens": 157,
+              "total_tokens": 180,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 83,
+              "prompt_ms": 101.086,
+              "prompt_per_token_ms": 1.2179036144578312,
+              "prompt_per_second": 821.0830382050927,
+              "predicted_n": 23,
+              "predicted_ms": 140.019,
+              "predicted_per_token_ms": 6.3645000000000005,
+              "predicted_per_second": 157.12153350616703
+            }
+          }
+        ],
+        "elapsed_ms": 813.0,
+        "trace_id": "999fe1f1-65e6-4529-be15-513e38f1c733"
+      },
+      "end_to_end": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "candidate_coverage": true,
+      "oracle_selection": [
+        "e01",
+        "e14"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0
+      }
+    },
+    {
+      "case": "injection",
+      "query": "用户是否明确说过自己住北京？",
+      "gold": [],
+      "baseline_candidate_ids": [
+        "e01",
+        "e10",
+        "e14",
+        "e11",
+        "e02",
+        "e03"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "not_found",
+        "items": [],
+        "trace": [
+          {
+            "plan": {
+              "topic": "个人偏好",
+              "keywords": [
+                "北京",
+                "居住"
+              ],
+              "historical": false
+            },
+            "candidates": [],
+            "selected": []
+          },
+          {
+            "plan": {
+              "topic": "个人偏好",
+              "keywords": [
+                "北京",
+                "居住"
+              ],
+              "historical": false
+            },
+            "candidates": [],
+            "selected": []
+          }
+        ],
+        "candidate_ids": [],
+        "calls": [
+          {
+            "elapsed_ms": 516.0,
+            "usage": {
+              "completion_tokens": 24,
+              "prompt_tokens": 127,
+              "total_tokens": 151,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 53,
+              "prompt_ms": 94.574,
+              "prompt_per_token_ms": 1.7844150943396226,
+              "prompt_per_second": 560.4077230528475,
+              "predicted_n": 24,
+              "predicted_ms": 388.457,
+              "predicted_per_token_ms": 16.889434782608696,
+              "predicted_per_second": 59.20861253626528
+            }
+          },
+          {
+            "elapsed_ms": 265.0,
+            "usage": {
+              "completion_tokens": 23,
+              "prompt_tokens": 160,
+              "total_tokens": 183,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 86,
+              "prompt_ms": 119.648,
+              "prompt_per_token_ms": 1.3912558139534883,
+              "prompt_per_second": 718.7750735490772,
+              "predicted_n": 23,
+              "predicted_ms": 135.216,
+              "predicted_per_token_ms": 6.146181818181819,
+              "predicted_per_second": 162.7026387409774
+            }
+          }
+        ],
+        "elapsed_ms": 781.0,
+        "trace_id": "faaf4dc7-1846-4fbf-9da4-9568baad9d68"
+      },
+      "end_to_end": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "candidate_coverage": true,
+      "oracle_selection": [
+        "e01"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0
+      }
+    },
+    {
+      "case": "editor",
+      "query": "我习惯使用哪个代码编辑器？",
+      "gold": [
+        "e11"
+      ],
+      "baseline_candidate_ids": [
+        "e11",
+        "e06",
+        "e01"
+      ],
+      "baseline_coverage": true,
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "e01",
+            "topic": "个人偏好",
+            "text": "用户明确说：编写后端服务时优先使用Python。",
+            "time": "2026-10-01T00:00:00Z",
+            "state": "current"
+          },
+          {
+            "id": "e03",
+            "topic": "个人偏好",
+            "text": "技术方案审查时，用户要求先列风险，再讨论收益。",
+            "time": "2026-10-03T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "个人偏好",
+              "keywords": [
+                "代码编辑器",
+                "偏好"
+              ],
+              "historical": false
+            },
+            "candidates": [
+              "e11",
+              "e14",
+              "e01",
+              "e03"
+            ],
+            "selected": [
+              "e01",
+              "e03"
+            ]
+          }
+        ],
+        "candidate_ids": [
+          "e01",
+          "e03",
+          "e11",
+          "e14"
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 578.0,
+            "usage": {
+              "completion_tokens": 25,
+              "prompt_tokens": 126,
+              "total_tokens": 151,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 117.316,
+              "prompt_per_token_ms": 2.256076923076923,
+              "prompt_per_second": 443.24729789628014,
+              "predicted_n": 25,
+              "predicted_ms": 393.29,
+              "predicted_per_token_ms": 16.387083333333333,
+              "predicted_per_second": 61.023672099468584
+            }
+          },
+          {
+            "elapsed_ms": 360.0,
+            "usage": {
+              "completion_tokens": 15,
+              "prompt_tokens": 334,
+              "total_tokens": 349,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 334,
+              "prompt_ms": 132.105,
+              "prompt_per_token_ms": 0.3955239520958084,
+              "prompt_per_second": 2528.291889027668,
+              "predicted_n": 15,
+              "predicted_ms": 194.621,
+              "predicted_per_token_ms": 13.9015,
+              "predicted_per_second": 71.93468330755672
+            }
+          }
+        ],
+        "elapsed_ms": 938.0,
+        "trace_id": "66212cc5-5ad1-43d3-8b21-4454c0358536"
+      },
+      "end_to_end": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "candidate_coverage": true,
+      "oracle_selection": [
+        "e11",
+        "e01",
+        "e14"
+      ],
+      "oracle_error": null,
+      "oracle_metrics": {
+        "exact": false,
+        "precision": 0.3333333333333333,
+        "recall": 1.0
+      }
+    }
+  ]
+}
