@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "FishMemory Archive",
+    "description": "Archives committed user and assistant messages to the local FishMemory memory service (HTTP, 127.0.0.1). Read/recall stays with the MCP memory_recall tool."
+  }
+}
+
