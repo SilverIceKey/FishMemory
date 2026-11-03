@@ -48,8 +48,7 @@ def _error(code):
                        'error': code}, ensure_ascii=False)
 
 
-@server.tool()
-def memory_recall(query: str) -> str:
+def _memory_recall(query: str) -> str:
     """Recall past conversations, user preferences and prior project decisions.
 
     Call proactively BEFORE answering when the answer depends on past user-specific
@@ -98,6 +97,15 @@ def memory_recall(query: str) -> str:
     observe.append_jsonl(config.service['call_log'],
                          observe.recall_log('mcp', config, result, elapsed_ms, len(query)))
     return json.dumps(body, ensure_ascii=False)
+
+
+@server.tool(description=_memory_recall.__doc__)
+def memory_recall(query: str) -> str:
+    try:
+        config = _config()
+    except config_module.ConfigError:
+        return _error('config_unavailable')
+    return observe.audit_call(config, query, lambda: _memory_recall(query))
 
 
 def main(argv=None):
