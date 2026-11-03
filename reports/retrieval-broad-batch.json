@@ -1,0 +1,844 @@
+{
+  "summary": {
+    "exact": 2,
+    "positive_covered": 7,
+    "calls": 16,
+    "input_tokens": 4238,
+    "output_tokens": 342,
+    "median_ms": 1031.5
+  },
+  "rows": [
+    {
+      "case": "offline",
+      "query": "松鼠项目为何不用云端存储？",
+      "gold": [
+        "n01"
+      ],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n05",
+            "topic": "松鼠项目",
+            "text": "松鼠项目最初采用CSV保存测量数据。",
+            "time": "2026-09-05T00:00:00Z",
+            "state": "historical"
+          },
+          {
+            "id": "n06",
+            "topic": "松鼠项目",
+            "text": "松鼠项目当前使用SQLite保存测量数据，替代了CSV。",
+            "time": "2026-09-06T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n01",
+          "n02",
+          "n05",
+          "n06",
+          "n07",
+          "n08",
+          "n09",
+          "n03",
+          "n04"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "松鼠项目",
+              "keywords": [
+                "松鼠项目",
+                "云端存储",
+                "个人习惯",
+                "故障记录",
+                "网页摘录"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n05",
+                  "n06"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 985.0,
+            "usage": {
+              "completion_tokens": 38,
+              "prompt_tokens": 126,
+              "total_tokens": 164,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 127.543,
+              "prompt_per_token_ms": 2.45275,
+              "prompt_per_second": 407.705636530425,
+              "predicted_n": 38,
+              "predicted_ms": 816.558,
+              "predicted_per_token_ms": 22.069135135135134,
+              "predicted_per_second": 45.3121517393743
+            }
+          },
+          {
+            "elapsed_ms": 375.0,
+            "usage": {
+              "completion_tokens": 15,
+              "prompt_tokens": 667,
+              "total_tokens": 682,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 603,
+              "prompt_ms": 174.999,
+              "prompt_per_token_ms": 0.2902139303482587,
+              "prompt_per_second": 3445.7339756227175,
+              "predicted_n": 15,
+              "predicted_ms": 173.079,
+              "predicted_per_token_ms": 12.362785714285716,
+              "predicted_per_second": 80.88791823387008
+            }
+          }
+        ],
+        "elapsed_ms": 1360.0
+      },
+      "metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "cost",
+      "query": "松树项目放弃云存储的理由？",
+      "gold": [
+        "n02"
+      ],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n05",
+            "topic": "松鼠项目",
+            "text": "松鼠项目最初采用CSV保存测量数据。",
+            "time": "2026-09-05T00:00:00Z",
+            "state": "historical"
+          },
+          {
+            "id": "n06",
+            "topic": "松鼠项目",
+            "text": "松鼠项目当前使用SQLite保存测量数据，替代了CSV。",
+            "time": "2026-09-06T00:00:00Z",
+            "state": "current"
+          },
+          {
+            "id": "n07",
+            "topic": "故障记录",
+            "text": "松鼠项目导入失败源于文件编码错误，转换为UTF-8后解决。",
+            "time": "2026-09-07T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n02",
+          "n01",
+          "n05",
+          "n06",
+          "n07"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "松树项目",
+              "keywords": [
+                "放弃",
+                "云存储",
+                "原因"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n05",
+                  "n06",
+                  "n07"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 672.0,
+            "usage": {
+              "completion_tokens": 28,
+              "prompt_tokens": 126,
+              "total_tokens": 154,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 102.349,
+              "prompt_per_token_ms": 1.96825,
+              "prompt_per_second": 508.0655404547186,
+              "predicted_n": 28,
+              "predicted_ms": 535.462,
+              "predicted_per_token_ms": 19.831925925925926,
+              "predicted_per_second": 50.4237462228879
+            }
+          },
+          {
+            "elapsed_ms": 406.0,
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 409,
+              "total_tokens": 429,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 345,
+              "prompt_ms": 135.27,
+              "prompt_per_token_ms": 0.39208695652173914,
+              "prompt_per_second": 2550.4546462630296,
+              "predicted_n": 20,
+              "predicted_ms": 203.586,
+              "predicted_per_token_ms": 10.715052631578947,
+              "predicted_per_second": 93.32665310974231
+            }
+          }
+        ],
+        "elapsed_ms": 1093.0
+      },
+      "metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "report",
+      "query": "我现在希望工作报告先写什么？",
+      "gold": [
+        "n03"
+      ],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n03",
+            "topic": "个人习惯",
+            "text": "用户希望工作报告先写结论，后附证据。",
+            "time": "2026-09-03T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n03",
+          "n04"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "个人习惯",
+              "keywords": [
+                "报告写作",
+                "文档结构",
+                "格式规范"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n03"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 579.0,
+            "usage": {
+              "completion_tokens": 30,
+              "prompt_tokens": 126,
+              "total_tokens": 156,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 105.899,
+              "prompt_per_token_ms": 2.0365192307692306,
+              "prompt_per_second": 491.0339096686465,
+              "predicted_n": 30,
+              "predicted_ms": 409.605,
+              "predicted_per_token_ms": 14.124310344827586,
+              "predicted_per_second": 70.79991699320077
+            }
+          },
+          {
+            "elapsed_ms": 265.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 219,
+              "total_tokens": 229,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 155,
+              "prompt_ms": 69.111,
+              "prompt_per_token_ms": 0.4458774193548387,
+              "prompt_per_second": 2242.7688790496445,
+              "predicted_n": 10,
+              "predicted_ms": 165.026,
+              "predicted_per_token_ms": 18.336222222222222,
+              "predicted_per_second": 54.53686085828899
+            }
+          }
+        ],
+        "elapsed_ms": 844.0
+      },
+      "metrics": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    },
+    {
+      "case": "original",
+      "query": "松鼠项目最初用什么保存测量数据？",
+      "gold": [
+        "n05"
+      ],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n01",
+            "topic": "松鼠项目",
+            "text": "松鼠项目取消云存储，因为离线现场无法联网。",
+            "time": "2026-09-01T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n05",
+          "n06",
+          "n01",
+          "n07",
+          "n02"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "松鼠项目",
+              "keywords": [
+                "数据保存",
+                "测量数据",
+                "记录"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n01"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 797.0,
+            "usage": {
+              "completion_tokens": 29,
+              "prompt_tokens": 127,
+              "total_tokens": 156,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 53,
+              "prompt_ms": 114.123,
+              "prompt_per_token_ms": 2.1532641509433965,
+              "prompt_per_second": 464.41120545376475,
+              "predicted_n": 29,
+              "predicted_ms": 664.291,
+              "predicted_per_token_ms": 23.724678571428573,
+              "predicted_per_second": 42.15020224570256
+            }
+          },
+          {
+            "elapsed_ms": 312.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 410,
+              "total_tokens": 420,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 346,
+              "prompt_ms": 130.549,
+              "prompt_per_token_ms": 0.3773092485549133,
+              "prompt_per_second": 2650.345847153176,
+              "predicted_n": 10,
+              "predicted_ms": 143.904,
+              "predicted_per_token_ms": 15.989333333333333,
+              "predicted_per_second": 62.541694462975315
+            }
+          }
+        ],
+        "elapsed_ms": 1125.0
+      },
+      "metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "current",
+      "query": "松鼠项目当前的测量数据存储方式？",
+      "gold": [
+        "n06"
+      ],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n01",
+            "topic": "松鼠项目",
+            "text": "松鼠项目取消云存储，因为离线现场无法联网。",
+            "time": "2026-09-01T00:00:00Z",
+            "state": "current"
+          },
+          {
+            "id": "n05",
+            "topic": "松鼠项目",
+            "text": "松鼠项目最初采用CSV保存测量数据。",
+            "time": "2026-09-05T00:00:00Z",
+            "state": "historical"
+          },
+          {
+            "id": "n07",
+            "topic": "故障记录",
+            "text": "松鼠项目导入失败源于文件编码错误，转换为UTF-8后解决。",
+            "time": "2026-09-07T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n06",
+          "n05",
+          "n01",
+          "n02",
+          "n07"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "松鼠项目",
+              "keywords": [
+                "测量",
+                "数据存储",
+                "历史"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n01",
+                  "n05",
+                  "n07"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 688.0,
+            "usage": {
+              "completion_tokens": 27,
+              "prompt_tokens": 126,
+              "total_tokens": 153,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 52,
+              "prompt_ms": 115.862,
+              "prompt_per_token_ms": 2.2281153846153847,
+              "prompt_per_second": 448.80979095820896,
+              "predicted_n": 27,
+              "predicted_ms": 541.876,
+              "predicted_per_token_ms": 20.841384615384616,
+              "predicted_per_second": 47.9814570123054
+            }
+          },
+          {
+            "elapsed_ms": 360.0,
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 409,
+              "total_tokens": 429,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 345,
+              "prompt_ms": 127.258,
+              "prompt_per_token_ms": 0.368863768115942,
+              "prompt_per_second": 2711.0279903817445,
+              "predicted_n": 20,
+              "predicted_ms": 206.57,
+              "predicted_per_token_ms": 10.872105263157895,
+              "predicted_per_second": 91.97850607542239
+            }
+          }
+        ],
+        "elapsed_ms": 1063.0
+      },
+      "metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "fix",
+      "query": "松鼠项目上次导入失败如何修复？",
+      "gold": [
+        "n07"
+      ],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n05",
+            "topic": "松鼠项目",
+            "text": "松鼠项目最初采用CSV保存测量数据。",
+            "time": "2026-09-05T00:00:00Z",
+            "state": "historical"
+          },
+          {
+            "id": "n06",
+            "topic": "松鼠项目",
+            "text": "松鼠项目当前使用SQLite保存测量数据，替代了CSV。",
+            "time": "2026-09-06T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n07",
+          "n05",
+          "n06",
+          "n01",
+          "n02"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "松鼠项目",
+              "keywords": [
+                "导入失败",
+                "修复",
+                "历史"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n05",
+                  "n06"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 515.0,
+            "usage": {
+              "completion_tokens": 28,
+              "prompt_tokens": 127,
+              "total_tokens": 155,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 53,
+              "prompt_ms": 118.011,
+              "prompt_per_token_ms": 2.226622641509434,
+              "prompt_per_second": 449.1106761234122,
+              "predicted_n": 28,
+              "predicted_ms": 366.342,
+              "predicted_per_token_ms": 13.568222222222222,
+              "predicted_per_second": 73.70162307352147
+            }
+          },
+          {
+            "elapsed_ms": 344.0,
+            "usage": {
+              "completion_tokens": 15,
+              "prompt_tokens": 410,
+              "total_tokens": 425,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 346,
+              "prompt_ms": 129.265,
+              "prompt_per_token_ms": 0.37359826589595374,
+              "prompt_per_second": 2676.67195296484,
+              "predicted_n": 15,
+              "predicted_ms": 171.579,
+              "predicted_per_token_ms": 12.255642857142858,
+              "predicted_per_second": 81.59506699537822
+            }
+          }
+        ],
+        "elapsed_ms": 859.0
+      },
+      "metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0.0
+      }
+    },
+    {
+      "case": "absent",
+      "query": "用户明确告诉过生日是哪天吗？",
+      "gold": [],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n03",
+            "topic": "个人习惯",
+            "text": "用户希望工作报告先写结论，后附证据。",
+            "time": "2026-09-03T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n08",
+          "n09",
+          "n03",
+          "n04"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "个人习惯",
+              "keywords": [
+                "生日",
+                "日期"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n03"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 516.0,
+            "usage": {
+              "completion_tokens": 24,
+              "prompt_tokens": 127,
+              "total_tokens": 151,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 53,
+              "prompt_ms": 106.357,
+              "prompt_per_token_ms": 2.0067358490566036,
+              "prompt_per_second": 498.3216901567363,
+              "predicted_n": 24,
+              "predicted_ms": 371.103,
+              "predicted_per_token_ms": 16.13491304347826,
+              "predicted_per_second": 61.977402500114515
+            }
+          },
+          {
+            "elapsed_ms": 343.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 351,
+              "total_tokens": 361,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 287,
+              "prompt_ms": 155.819,
+              "prompt_per_token_ms": 0.5429233449477352,
+              "prompt_per_second": 1841.8806435672159,
+              "predicted_n": 10,
+              "predicted_ms": 151.924,
+              "predicted_per_token_ms": 16.880444444444446,
+              "predicted_per_second": 59.24014638898396
+            }
+          }
+        ],
+        "elapsed_ms": 859.0
+      },
+      "metrics": {
+        "exact": false,
+        "precision": 0.0,
+        "recall": 0
+      }
+    },
+    {
+      "case": "time",
+      "query": "用户通常希望几点开技术评审？",
+      "gold": [
+        "n09"
+      ],
+      "result": {
+        "status": "found",
+        "items": [
+          {
+            "id": "n09",
+            "topic": "个人习惯",
+            "text": "用户喜欢在上午九点安排技术评审。",
+            "time": "2026-09-09T00:00:00Z",
+            "state": "current"
+          }
+        ],
+        "candidate_ids": [
+          "n09",
+          "n03",
+          "n04",
+          "n08"
+        ],
+        "trace": [
+          {
+            "plan": {
+              "topic": "松树项目",
+              "keywords": [
+                "技术评审",
+                "时间",
+                "习惯"
+              ],
+              "historical": false
+            },
+            "judgments": [
+              {
+                "selected": [
+                  "n09"
+                ]
+              }
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "elapsed_ms": 657.0,
+            "usage": {
+              "completion_tokens": 28,
+              "prompt_tokens": 127,
+              "total_tokens": 155,
+              "prompt_tokens_details": {
+                "cached_tokens": 74
+              }
+            },
+            "timings": {
+              "cache_n": 74,
+              "prompt_n": 53,
+              "prompt_ms": 96.913,
+              "prompt_per_token_ms": 1.8285471698113207,
+              "prompt_per_second": 546.8822552185981,
+              "predicted_n": 28,
+              "predicted_ms": 519.519,
+              "predicted_per_token_ms": 19.241444444444443,
+              "predicted_per_second": 51.97115023704619
+            }
+          },
+          {
+            "elapsed_ms": 328.0,
+            "usage": {
+              "completion_tokens": 10,
+              "prompt_tokens": 351,
+              "total_tokens": 361,
+              "prompt_tokens_details": {
+                "cached_tokens": 64
+              }
+            },
+            "timings": {
+              "cache_n": 64,
+              "prompt_n": 287,
+              "prompt_ms": 154.723,
+              "prompt_per_token_ms": 0.5391045296167248,
+              "prompt_per_second": 1854.927838782857,
+              "predicted_n": 10,
+              "predicted_ms": 142.699,
+              "predicted_per_token_ms": 15.855444444444446,
+              "predicted_per_second": 63.069818288845745
+            }
+          }
+        ],
+        "elapsed_ms": 1000.0
+      },
+      "metrics": {
+        "exact": true,
+        "precision": 1.0,
+        "recall": 1.0
+      }
+    }
+  ],
+  "dataset_sha256": "1342a6955c46527e7e4689728c931dd20ba8aae39ca33044d11937ddece0069b",
+  "online_calls": 0
+}
