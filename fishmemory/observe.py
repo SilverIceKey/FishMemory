@@ -9,6 +9,8 @@ Logs are local-only JSONL. They never contain the bearer token or model keys;
 query text is not stored, only its length.
 """
 import json
+import hashlib
+import uuid
 import threading
 import time
 from pathlib import Path
@@ -82,6 +84,34 @@ def append_jsonl(path, entry):
         with _LOCK:
             with target.open('a', encoding='utf-8') as handle:
                 handle.write(line + '\n')
+        return True
     except (OSError, TypeError, ValueError):
-        pass
+        return False
+
+
+def audit_call(config, query, operation):
+    """A receipt correlates tool output with local invocation, not answer causality."""
+    trace_id = str(uuid.uuid4())
+    base = {'component': 'fishmemory', 'source': 'mcp', 'tool': 'memory_recall',
+            'trace_id': trace_id, 'query_chars': len(query),
+            'query_sha256': hashlib.sha256(query.encode('utf-8')).hexdigest(),
+            'user_id': config.user_id, 'agent_id': config.agent_id}
+    path = config.service['call_log']
+    started = time.monotonic()
+    logged_start = append_jsonl(path, dict(base, time=time.time(), phase='started'))
+    try:
+        body = json.loads(operation())
+    except Exception:
+        append_jsonl(path, dict(base, time=time.time(), phase='failed', error='unhandled_error'))
+        raise
+    digest = hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True,
+                                      separators=(',', ':')).encode('utf-8')).hexdigest()
+    logged_end = append_jsonl(path, dict(base, time=time.time(), phase='completed',
+        status=body.get('status'), error=body.get('error'),
+        ids=[x['id'] for x in body.get('items', [])], response_sha256=digest,
+        elapsed_ms=round((time.monotonic()-started)*1000, 2)))
+    body['provenance'] = {'provider': 'fishmemory', 'trace_id': trace_id,
+                          'response_sha256': digest,
+                          'audit_logged': logged_start and logged_end}
+    return json.dumps(body, ensure_ascii=False)
 
