@@ -1,0 +1,21 @@
+{
+  "db": ".fishmemory/memory.sqlite",
+  "user_id": "local",
+  "agent_id": "dsh",
+  "model": {
+    "base_url": "http://127.0.0.1:11435/v1",
+    "model": "qwen3.5-0.8b",
+    "api_key_file": "E:/AI/llama.cpp-cuda12/service/api-keys.txt"
+  },
+  "service": {
+    "host": "127.0.0.1",
+    "port": 8765,
+    "token_file": ".fishmemory/service.token",
+    "call_log": ".fishmemory/mcp-calls.jsonl",
+    "ingest_log": ".fishmemory/ingest.jsonl",
+    "max_body_bytes": 262144,
+    "max_events": 64,
+    "recall_deadline_s": 20
+  }
+}
+
