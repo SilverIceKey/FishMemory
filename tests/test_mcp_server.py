@@ -138,7 +138,19 @@ class McpServerTests(unittest.TestCase):
         entry = json.loads(self.call_log.read_text(encoding='utf-8').splitlines()[-1])
         self.assertEqual((entry['source'], entry['status']), ('mcp', 'found'))
         self.assertEqual((entry['user_id'], entry['agent_id']), ('u', 'a'))
-        self.assertTrue(entry['calls'])
+        self.assertEqual(entry['phase'], 'completed')
+        self.assertEqual(entry['trace_id'], body['provenance']['trace_id'])
+        self.assertEqual(entry['response_sha256'], body['provenance']['response_sha256'])
+        self.assertTrue(body['provenance']['audit_logged'])
+        entries = [json.loads(x) for x in self.call_log.read_text(encoding='utf-8').splitlines()]
+        self.assertTrue(any(x.get('calls') for x in entries))
+        self.assertEqual(entries[0]['phase'], 'started')
+
+    def test_audit_failure_is_visible_in_receipt(self):
+        with mock.patch.object(mcp_server.observe, 'append_jsonl', return_value=False):
+            body = json.loads(mcp_server.memory_recall('SQLite'))
+        self.assertFalse(body['provenance']['audit_logged'])
+        self.assertEqual(body['error'], 'database_unavailable')
 
     def test_config_failure_is_structured_error(self):
         mcp_server._CONFIG = None
