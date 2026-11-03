@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "FishMemory 归档",
+    "description": "把已提交的用户与主模型消息通过本机 HTTP 归档到 FishMemory 记忆服务；回忆/检索仍由 MCP memory_recall 工具负责。"
+  }
+}
+
