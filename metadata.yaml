@@ -1,6 +1,6 @@
 name: astrbot_plugin_fishmemory
 display_name: FishMemory 本地长期记忆
 desc: 按需保存和回忆用户记忆，使用 SQLite 和可配置的本地 llama.cpp 模型。
-version: v0.2.2
+version: v0.2.3
 author: SilverIceKey
 repo: https://github.com/SilverIceKey/FishMemory

@@ -44,9 +44,20 @@ async def run(config, tmp, distribution=None):
     assert set(tools) == {'memory_store', 'memory_recall'}, tools
     assert set(tools['memory_store'].parameters['properties']) == {'content', 'topic', 'source_quote', 'mode'}
     host_settings = {'baseUrl': config['base_url'], 'apiKeyFile': config['api_key_file'], 'modelId': ''}
-    adapter = module.FishMemoryPlugin(None, host_settings)
+    from astrbot.core.config import AstrBotConfig
+    schema = json.loads((plugin / '_conf_schema.json').read_text(encoding='utf-8'))
+    settings_path = str(tmp / 'fishmemory-test.json')
+    host_config = AstrBotConfig(settings_path, schema=schema)
+    host_config.save_config(host_settings)
+    adapter = module.FishMemoryPlugin(None, host_config)
+    await adapter.initialize()
     ids = await asyncio.to_thread(module.backend.models, module.bridge.model_settings(host_settings))
     selected = module.backend.choose(ids, '')
+    assert selected in host_config.schema['modelId']['options']
+    host_config['modelId'] = selected
+    host_config.save_config()
+    host_settings = AstrBotConfig(settings_path, schema=schema)
+    assert host_settings['modelId'] == selected
     event = module.AstrMessageEvent.__new__(module.AstrMessageEvent)
     event.platform_meta = SimpleNamespace(id='smoke-platform')
     event.message_obj = SimpleNamespace(type=MessageType.FRIEND_MESSAGE, group_id='', self_id='test-bot',

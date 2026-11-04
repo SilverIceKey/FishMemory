@@ -1,6 +1,29 @@
 {
-  "baseUrl": {"type":"string", "description":"本地 llama.cpp API 地址", "hint":"可填写 http://127.0.0.1:11435 或完整的 /v1 地址。容器内请使用能访问宿主机的地址。", "default":"http://127.0.0.1:11435/v1"},
-  "apiKey": {"type":"string", "description":"llama.cpp API Key", "hint":"填写密钥本身，不加 Bearer。保存在 AstrBot 本机插件配置中。也可留空并填写下面的密钥文件路径。", "default":""},
-  "apiKeyFile": {"type":"string", "description":"API Key 文件路径（可选）", "hint":"AstrBot 进程能读取的绝对路径；仅当上方 API Key 为空时读取。", "default":""},
-  "modelId": {"type":"string", "description":"记忆模型 ID（默认自动发现）", "hint":"留空时自动使用 /models 返回的唯一模型。有多个模型时，用 /fishmemory_models 查看并填写 ID。", "default":""}
+  "baseUrl": {
+    "type": "string",
+    "description": "本地 llama.cpp API 地址",
+    "hint": "可填写 http://127.0.0.1:11435 或完整的 /v1 地址。容器内请使用能访问宿主机的地址。",
+    "default": "http://127.0.0.1:11435/v1"
+  },
+  "apiKey": {
+    "type": "string",
+    "description": "llama.cpp API Key",
+    "hint": "填写密钥本身，不加 Bearer。保存在 AstrBot 本机插件配置中。也可留空并填写下面的密钥文件路径。",
+    "default": ""
+  },
+  "apiKeyFile": {
+    "type": "string",
+    "description": "API Key 文件路径（可选）",
+    "hint": "AstrBot 进程能读取的绝对路径；仅当上方 API Key 为空时读取。",
+    "default": ""
+  },
+  "modelId": {
+    "type": "string",
+    "description": "选择记忆模型",
+    "hint": "填写地址和密钥后保存配置以获取模型，重新打开配置即可选择；仅一个模型也可显式选择。留空表示自动选择唯一模型。",
+    "default": "",
+    "options": [
+      ""
+    ]
+  }
 }

@@ -18,6 +18,25 @@ class FishMemoryPlugin(Star):
         self.settings = config
         self.root = StarTools.get_data_dir('astrbot_plugin_fishmemory')
 
+    async def initialize(self):
+        # AstrBot 4.14.6 reloads the plugin after saving configuration and
+        # serves the live config.schema to the dashboard on the next open.
+        field = self.settings.schema['modelId']
+        selected = self.settings.get('modelId', '')
+        try:
+            ids = await asyncio.to_thread(backend.models, bridge.model_settings(self.settings))
+        except HTTPError as exc:
+            ids = []
+            field['hint'] = f'获取模型失败（HTTP {exc.code}）。请检查地址和密钥，保存后重新打开配置。'
+        except (OSError, ValueError):
+            ids = []
+            field['hint'] = '获取模型失败。请检查服务地址、密钥文件和模型服务，保存后重新打开配置。'
+        else:
+            field['hint'] = f'获取到 {len(ids)} 个模型。选择后保存即可使用；留空表示自动选择唯一模型。'
+            if selected and selected not in ids:
+                field['hint'] += ' 原选择已不在服务列表中，请重新选择。'
+        field['options'] = list(dict.fromkeys(['', *ids, *([selected] if selected else [])]))
+
     @filter.on_llm_request()
     async def apply_memory_voice(self, event: AstrMessageEvent, req: ProviderRequest):
         try:
