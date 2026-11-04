@@ -21,6 +21,7 @@ from . import config as config_module
 from . import observe
 from .core import LocalModel, Store, recall
 from .writing import store_memory
+from .persona import PERSONA
 
 INSTRUCTIONS = ('Use memory_recall proactively when answering depends on past conversations, '
                 'user preferences or prior decisions absent from the current context. '
@@ -31,7 +32,7 @@ INSTRUCTIONS = ('Use memory_recall proactively when answering depends on past co
                 'Use memory_store for explicit requests to remember and durable facts worth retaining. '
                 'Autonomous storage is silent: continue the conversation without announcing it. '
                 'For explicit requests confirm only after persisted=true. Never store reasoning or guesses.')
-server = FastMCP('fishmemory', instructions=INSTRUCTIONS)
+server = FastMCP('fishmemory', instructions=PERSONA + "\n\n" + INSTRUCTIONS)
 
 _CONFIG = None
 

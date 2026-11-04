@@ -4,10 +4,12 @@ import json
 from urllib.error import HTTPError
 
 from astrbot.api.event import AstrMessageEvent, filter
+from astrbot.api.provider import ProviderRequest
 from astrbot.api.star import Context, Star, StarTools
 
 from .fishmemory import astrbot_adapter as bridge
 from .fishmemory import model_endpoint as backend
+from .fishmemory.persona import PERSONA
 
 
 class FishMemoryPlugin(Star):
@@ -15,6 +17,14 @@ class FishMemoryPlugin(Star):
         super().__init__(context)
         self.settings = config
         self.root = StarTools.get_data_dir('astrbot_plugin_fishmemory')
+
+    @filter.on_llm_request()
+    async def apply_memory_voice(self, event: AstrMessageEvent, req: ProviderRequest):
+        if getattr(event.get_message_type(), 'value', None) != 'FriendMessage' or event.get_group_id():
+            return
+        prompt = req.system_prompt or ''
+        if PERSONA not in prompt:
+            req.system_prompt = prompt + '\n\n' + PERSONA if prompt else PERSONA
 
     @filter.command('fishmemory_models')
     @filter.permission_type(filter.PermissionType.ADMIN)
