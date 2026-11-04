@@ -147,6 +147,8 @@ function createHarness(t, configOverrides = {}, fetchOptions = {}, tokenContent 
     serviceUrl: 'http://127.0.0.1:8765',
     tokenFile: file,
     topic: TOPIC,
+    archiveUser: true,
+    archiveAssistant: true,
     batchSize: 16,
     flushDelayMs: 50,
     ...configOverrides,
@@ -616,6 +618,8 @@ test('apply：只订阅 session/event，healthz 失败不阻断激活，卸载�
     serviceUrl: 'http://127.0.0.1:8765',
     tokenFile: file,
     topic: TOPIC,
+    archiveUser: true,
+    archiveAssistant: true,
     batchSize: 1,
     flushDelayMs: 1000,
   };
@@ -652,4 +656,3 @@ test('apply：健康探测成功时 info 日志包含 serviceUrl', async (t) => 
   assert.ok(logger.infos.some((message) => message.includes('http://127.0.0.1:8765')));
   await effects[0].cleanup();
 });
-

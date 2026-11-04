@@ -39,6 +39,19 @@ class FakeModel:
 
 
 class ServiceTests(unittest.TestCase):
+    def test_selected_store_auth_scope_and_audit(self):
+        payload = {'content': '喜欢中文', 'topic': '偏好', 'source_quote': '我喜欢中文'}
+        self.assertEqual(self.request('POST', '/v1/store', payload, token='')[0], 401)
+        self.assertEqual(self.request('POST', '/v1/store', dict(payload, user_id='other'))[0], 400)
+        code, body = self.request('POST', '/v1/store', payload)
+        self.assertEqual(code, 200)
+        self.assertTrue(body['persisted'])
+        self.assertEqual(body['reply_policy'], 'silent')
+        self.assertEqual(self.stored_ids(), {body['items'][0]['id']})
+        self.assertEqual(self.stored_ids(('other', 'a')), set())
+        log = json.loads(self.call_log.read_text(encoding='utf-8').splitlines()[-1])
+        self.assertEqual((log['source'], log['tool']), ('http', 'memory_store'))
+
     def test_incomplete_body_times_out_and_server_remains_available(self):
         with mock.patch.object(service, 'REQUEST_TIMEOUT_S', 0.1):
             with socket.create_connection(('127.0.0.1', self.port), timeout=2) as sock:
@@ -350,4 +363,3 @@ class ServiceTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

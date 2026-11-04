@@ -95,7 +95,9 @@ class McpServerTests(unittest.TestCase):
 
     def test_single_tool_with_no_scope_arguments(self):
         tools = asyncio.run(mcp_server.server.list_tools())
-        self.assertEqual([tool.name for tool in tools], ['memory_recall'])
+        self.assertEqual([tool.name for tool in tools], ['memory_recall', 'memory_store'])
+        self.assertNotIn('user_id', tools[1].inputSchema['properties'])
+        self.assertNotIn('agent_id', tools[1].inputSchema['properties'])
         schema = tools[0].inputSchema
         self.assertEqual(set(schema.get('properties', {})), {'query'})
         self.assertEqual(schema.get('required'), ['query'])
@@ -164,4 +166,3 @@ class McpServerTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

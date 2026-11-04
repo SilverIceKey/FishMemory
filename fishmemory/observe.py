@@ -89,10 +89,10 @@ def append_jsonl(path, entry):
         return False
 
 
-def audit_call(config, query, operation):
+def audit_call(config, query, operation, tool='memory_recall', source='mcp'):
     """A receipt correlates tool output with local invocation, not answer causality."""
     trace_id = str(uuid.uuid4())
-    base = {'component': 'fishmemory', 'source': 'mcp', 'tool': 'memory_recall',
+    base = {'component': 'fishmemory', 'source': source, 'tool': tool,
             'trace_id': trace_id, 'query_chars': len(query),
             'query_sha256': hashlib.sha256(query.encode('utf-8')).hexdigest(),
             'user_id': config.user_id, 'agent_id': config.agent_id}
@@ -114,4 +114,3 @@ def audit_call(config, query, operation):
                           'response_sha256': digest,
                           'audit_logged': logged_start and logged_end}
     return json.dumps(body, ensure_ascii=False)
-

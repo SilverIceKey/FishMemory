@@ -21,7 +21,7 @@ EVENT_STATES = ('current', 'historical', 'disputed')
 EVENT_TEXT_LIMIT = 20000
 BODY_DRAIN_LIMIT = 1024 * 1024
 REQUEST_TIMEOUT_S = 5
-_POST_PATHS = ('/v1/events', '/v1/recall', '/v1/forget')
+_POST_PATHS = ('/v1/events', '/v1/recall', '/v1/forget', '/v1/store')
 
 
 class HttpError(Exception):
@@ -197,6 +197,23 @@ class _Handler(BaseHTTPRequestHandler):
         except (UnicodeDecodeError, json.JSONDecodeError):
             raise HttpError(400, 'invalid_json')
 
+    def _store(self):
+        from .writing import store_memory
+        body = self._read_json()
+        allowed = {'content', 'topic', 'source_quote', 'mode'}
+        if not isinstance(body, dict) or set(body) - allowed:
+            raise HttpError(400, 'invalid_request')
+        content = body.get('content')
+        if not isinstance(content, str):
+            raise HttpError(400, 'invalid_request')
+        config = self.server.config
+        result = json.loads(observe.audit_call(config, content, lambda: json.dumps(
+            store_memory(config, content, body.get('topic'), body.get('source_quote'),
+                         body.get('mode', 'autonomous')), ensure_ascii=False),
+            tool='memory_store', source='http'))
+        code = 503 if result.get('error') == 'storage_unavailable' else 400 if result['status'] == 'error' else 200
+        self._send_json(code, result)
+
     def _events(self):
         config = self.server.config
         body = self._read_json()
@@ -317,4 +334,3 @@ def run_service(config):
         pass
     finally:
         server.server_close()
-

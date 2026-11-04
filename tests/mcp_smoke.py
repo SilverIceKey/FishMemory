@@ -60,7 +60,7 @@ async def _run(config_path):
         async with ClientSession(read, write) as client:
             init = await client.initialize()
             tools = await client.list_tools()
-            assert [tool.name for tool in tools.tools] == ['memory_recall'], tools
+            assert [tool.name for tool in tools.tools] == ['memory_recall', 'memory_store'], tools
             result = await client.call_tool('memory_recall', {'query': QUERY})
             assert not result.isError, result
             return init.protocolVersion, json.loads(result.content[0].text)
@@ -95,4 +95,3 @@ def main(argv=None):
 
 if __name__ == '__main__':
     raise SystemExit(main())
-

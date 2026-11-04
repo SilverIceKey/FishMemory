@@ -6,6 +6,7 @@ import time
 import urllib.request
 import uuid
 from pathlib import Path
+from . import model_endpoint
 
 
 def terms(text):
@@ -35,6 +36,9 @@ class Store:
               user_id TEXT, agent_id TEXT, event_id TEXT,
               PRIMARY KEY(user_id,agent_id,event_id));
             PRAGMA user_version=1;
+            CREATE TABLE IF NOT EXISTS memory_sources (
+              user_id TEXT, agent_id TEXT, event_id TEXT, source_quote TEXT, mode TEXT,
+              PRIMARY KEY(user_id,agent_id,event_id));
             ''')
         except BaseException:
             # A busy/locked database must not leak an open connection; the
@@ -68,6 +72,7 @@ class Store:
                 self.db.execute('DELETE FROM event_fts WHERE rowid=?', (row[0],))
                 self.db.execute('DELETE FROM events WHERE rowid=?', (row[0],))
             self.db.execute('INSERT OR IGNORE INTO tombstones VALUES (?,?,?)', (*scope, event_id))
+            self.db.execute('DELETE FROM memory_sources WHERE user_id=? AND agent_id=? AND event_id=?', (*scope, event_id))
 
     def topics(self, scope):
         return [r[0] for r in self.db.execute('SELECT DISTINCT topic FROM events WHERE user_id=? AND agent_id=? ORDER BY topic LIMIT 32', scope)]
@@ -81,6 +86,11 @@ class Store:
             if r:
                 d = dict(r)
                 d['text'] = d['text'][:1200]
+                source = self.db.execute('SELECT source_quote,mode FROM memory_sources WHERE user_id=? AND agent_id=? AND event_id=?', (*scope, ident)).fetchone()
+                if source:
+                    d['source_quote'] = source['source_quote'][:1200]
+                    d['source_verification'] = 'caller_supplied'
+                    d['storage_mode'] = source['mode']
                 out.append(d)
         return out
 
@@ -124,11 +134,10 @@ class LocalModel:
                 'messages':[{'role':'system','content':instruction},
                             {'role':'user','content':json.dumps(data, ensure_ascii=False)}],
                 'response_format':{'type':'json_schema','json_schema':{'name':'retrieval','strict':True,'schema':output_schema}}}
-        key = Path(self.config['api_key_file']).read_text(encoding='utf-8-sig').strip()
-        req = urllib.request.Request(self.config['base_url']+'/chat/completions', data=json.dumps(body).encode(), headers={'Content-Type':'application/json', 'Authorization':'Bearer '+key})
+        req = urllib.request.Request(self.config['base_url']+'/chat/completions', data=json.dumps(body).encode(), headers={'Content-Type':'application/json', **model_endpoint.headers(self.config)})
         start = time.monotonic()
         # Local inference should not be forwarded through a system HTTP proxy.
-        with urllib.request.build_opener(urllib.request.ProxyHandler({})).open(req, timeout=min(remaining, 15)) as response:
+        with model_endpoint.opener().open(req, timeout=min(remaining, 15)) as response:
             result = json.load(response)
         if time.monotonic() > deadline:
             raise TimeoutError('retrieval deadline')
@@ -261,4 +270,3 @@ def recall(store, scope, query, model, max_rounds=2, deadline_s=20):
                   calls=model.calls[offset:], elapsed_ms=round((time.monotonic()-start)*1000, 2),
                   trace_id=str(uuid.uuid4()))
     return result
-

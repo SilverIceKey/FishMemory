@@ -51,8 +51,8 @@ export const CONFIG_DEFAULTS = Object.freeze({
   userId: 'local',
   agentId: 'dsh',
   topic: '会话',
-  archiveUser: true,
-  archiveAssistant: true,
+  archiveUser: false,
+  archiveAssistant: false,
   archiveToolResults: false,
   maxTextChars: 4000,
   batchSize: 16,
@@ -667,4 +667,3 @@ function fireAndForgetStart(archiver, ctx) {
     }
   });
 }
-
