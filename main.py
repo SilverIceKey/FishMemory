@@ -20,7 +20,9 @@ class FishMemoryPlugin(Star):
 
     @filter.on_llm_request()
     async def apply_memory_voice(self, event: AstrMessageEvent, req: ProviderRequest):
-        if getattr(event.get_message_type(), 'value', None) != 'FriendMessage' or event.get_group_id():
+        try:
+            bridge.scope_config(self.root, event)
+        except ValueError:
             return
         prompt = req.system_prompt or ''
         if PERSONA not in prompt:

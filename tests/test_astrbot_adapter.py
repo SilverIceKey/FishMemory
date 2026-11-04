@@ -12,12 +12,13 @@ from fishmemory.core import Store
 
 
 class Event:
-    def __init__(self, sender='alice', bot='bot', platform='qq', kind='FriendMessage'):
+    def __init__(self, sender='alice', bot='bot', platform='qq', kind='FriendMessage', group=''):
+        self.group = group
         self.sender, self.bot, self.platform, self.kind = sender, bot, platform, kind
     def get_sender_id(self): return self.sender
     def get_platform_id(self): return self.platform
     def get_self_id(self): return self.bot
-    def get_group_id(self): return ''
+    def get_group_id(self): return self.group
     def get_message_type(self): return SimpleNamespace(value=self.kind)
 
 
@@ -33,6 +34,12 @@ class AstrBotTests(unittest.TestCase):
                 for event in [Event('bob'), Event(bot='other'), Event(platform='else')]:
                     self.assertFalse(db.details(adapter.scope_config(root, event).scope, [ident]))
                 self.assertTrue(db.details(adapter.scope_config(root, Event()).scope, [ident]))
+                group = adapter.scope_config(root, Event(kind='GroupMessage', group='A'))
+                self.assertFalse(db.details(group.scope, [ident]))
+                group_id = json.loads(adapter.store(group, '群约定', '主题', '群约定', 'explicit'))['items'][0]['id']
+                self.assertTrue(db.details(group.scope, [group_id]))
+                for other in [Event(), Event(kind='GroupMessage', group='B'), Event('bob', kind='GroupMessage', group='A')]:
+                    self.assertFalse(db.details(adapter.scope_config(root, other).scope, [group_id]))
                 for event in [Event(''), Event(kind='GroupMessage'), Event(kind='OtherMessage')]:
                     with self.assertRaises(ValueError): adapter.scope_config(root, event)
             finally:
