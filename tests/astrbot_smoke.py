@@ -83,6 +83,7 @@ async def run(config, tmp, distribution=None):
     assert await manager.new_conversation(origin) != old
     second = module.FishMemoryPlugin(None, host_settings)
     scoped = module.bridge.scope_config(second.root, event)
+    assert address['items'][0]['id'] in module.bridge.check_receipt(scoped, '')
     assert '仍在' in module.bridge.check_receipt(scoped, address['items'][0]['id'])
     checked = json.loads(await second.memory_recall(event, '叫我什么'))
     assert address['items'][0]['id'] in [item['id'] for item in checked['items']], checked

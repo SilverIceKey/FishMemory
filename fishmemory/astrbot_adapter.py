@@ -33,13 +33,21 @@ def scope_config(root, event):
 
 
 def check_receipt(config, ident):
-    if not re.fullmatch(r'memory-[0-9a-f]{64}', ident):
+    if ident and not re.fullmatch(r'memory-[0-9a-f]{64}', ident):
         return '请提供写入回执中以 memory- 开头的完整记录 ID。'
     if not config.db.is_file():
         return '当前插件数据目录里没有记忆数据库。'
     try:
         db = sqlite3.connect(config.db.as_uri() + '?mode=ro', uri=True, timeout=2)
         try:
+            if not ident:
+                rows = db.execute(
+                    'SELECT topic,event_id FROM events WHERE user_id=? AND agent_id=? '
+                    'ORDER BY occurred_at DESC, rowid DESC LIMIT 5', config.scope).fetchall()
+                if not rows:
+                    return '数据库存在。当前平台、机器人和发送者账号范围内有 0 条记录。'
+                return '当前账号最近的记录（最多 5 条）\n' + '\n'.join(
+                    f'{topic[:48]}  {event_id}' for topic, event_id in rows)
             present = db.execute('SELECT 1 FROM events WHERE user_id=? AND agent_id=? AND event_id=?',
                                  (*config.scope, ident)).fetchone()
         finally:

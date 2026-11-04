@@ -57,7 +57,7 @@ class FishMemoryPlugin(Star):
         tools = getattr(req.func_tool, 'tools', None)
         visibility = 'unknown' if not isinstance(tools, list) else str(any(
             tool.name == 'memory_recall' for tool in tools)).lower()
-        logger.info('[FishMemory 0.2.6] chat=%s recall_in_hook_toolset=%s',
+        logger.info('[FishMemory 0.2.7] chat=%s recall_in_hook_toolset=%s',
                     event.get_message_type().value, visibility)
         prompt = req.system_prompt or ''
         for section in (PERSONA, RECALL_POLICY):
@@ -66,8 +66,11 @@ class FishMemoryPlugin(Star):
         req.system_prompt = prompt
 
     @filter.command('fishmemory_check')
-    async def check_memory(self, event: AstrMessageEvent, ident: str):
-        """根据写入回执，在当前账号范围内检查落盘记录。"""
+    async def check_memory(self, event: AstrMessageEvent, ident: str = ''):
+        """私聊无参数列出自己的近期记录，带编号检查单条回执。"""
+        if not ident and (getattr(event.get_message_type(), 'value', None) != 'FriendMessage' or event.get_group_id()):
+            yield event.plain_result('请在私聊中查看自己最近的记录。')
+            return
         try:
             config = bridge.scope_config(self.root, event)
             result = await asyncio.to_thread(bridge.check_receipt, config, ident)
