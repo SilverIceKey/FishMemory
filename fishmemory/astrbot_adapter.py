@@ -1,6 +1,7 @@
 """Private-chat adapter for AstrBot. Host-owned identity never comes from an LLM."""
 import hashlib
 import json
+import re
 import sqlite3
 import time
 from urllib.error import HTTPError
@@ -29,6 +30,23 @@ def scope_config(root, event):
         return hashlib.sha256(json.dumps([str(p) for p in parts]).encode()).hexdigest()
     return _build(root / 'scope.json', {'db': 'memory.sqlite', 'user_id': identity(platform, sender),
         'agent_id': identity(platform, bot)})
+
+
+def check_receipt(config, ident):
+    if not re.fullmatch(r'memory-[0-9a-f]{64}', ident):
+        return '请提供写入回执中以 memory- 开头的完整记录 ID。'
+    if not config.db.is_file():
+        return '当前插件数据目录里没有记忆数据库。'
+    try:
+        db = sqlite3.connect(config.db.as_uri() + '?mode=ro', uri=True, timeout=2)
+        try:
+            present = db.execute('SELECT 1 FROM events WHERE user_id=? AND agent_id=? AND event_id=?',
+                                 (*config.scope, ident)).fetchone()
+        finally:
+            db.close()
+    except sqlite3.Error:
+        return '数据库暂时无法读取。'
+    return '当前账号的这条记录仍在数据库中。' if present else '当前账号范围内未找到这条记录。'
 
 
 def store(config, content, topic, source_quote, mode):

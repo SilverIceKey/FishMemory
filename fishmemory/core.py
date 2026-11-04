@@ -181,7 +181,15 @@ def recall_legacy(store, scope, query, model, max_rounds=2, deadline_s=20):
             plan=model.plan(query,store.topics(scope),trace,deadline)
             candidates=store.search(scope,' '.join(plan['keywords']),plan['topic'],plan['historical'])
             seen.update(c['id'] for c in candidates)
-            selected=model.select(query,candidates,deadline)
+            # Short Chinese questions often share no index terms with the stored
+            # preference. Add bounded candidates, then keep the model evidence check.
+            selection_query = query
+            if re.search(r'(?:叫我|喊我|称呼我).{0,4}(?:什么|啥)|(?:怎么|如何)(?:叫我|称呼我)|我的称呼', query):
+                extra = store.search(scope, '称呼 偏好 叫我 喊我', limit=6)
+                candidates = list({c['id']: c for c in extra + candidates}.values())[:12]
+                seen.update(c['id'] for c in candidates)
+                selection_query = query + '（用户以前要求别人如何称呼自己？选择有本人称呼要求的原话。）'
+            selected=model.select(selection_query,candidates,deadline)
             trace.append({'plan':plan,'candidates':[c['id'] for c in candidates], 'selected':selected})
             if selected:
                 break

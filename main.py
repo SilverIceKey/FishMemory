@@ -57,13 +57,23 @@ class FishMemoryPlugin(Star):
         tools = getattr(req.func_tool, 'tools', None)
         visibility = 'unknown' if not isinstance(tools, list) else str(any(
             tool.name == 'memory_recall' for tool in tools)).lower()
-        logger.info('[FishMemory 0.2.5] chat=%s recall_in_hook_toolset=%s',
+        logger.info('[FishMemory 0.2.6] chat=%s recall_in_hook_toolset=%s',
                     event.get_message_type().value, visibility)
         prompt = req.system_prompt or ''
         for section in (PERSONA, RECALL_POLICY):
             if section not in prompt:
                 prompt = prompt + '\n\n' + section if prompt else section
         req.system_prompt = prompt
+
+    @filter.command('fishmemory_check')
+    async def check_memory(self, event: AstrMessageEvent, ident: str):
+        """根据写入回执，在当前账号范围内检查落盘记录。"""
+        try:
+            config = bridge.scope_config(self.root, event)
+            result = await asyncio.to_thread(bridge.check_receipt, config, ident)
+        except ValueError:
+            result = '无法识别当前账号。'
+        yield event.plain_result(result)
 
     @filter.command('fishmemory_models')
     @filter.permission_type(filter.PermissionType.ADMIN)

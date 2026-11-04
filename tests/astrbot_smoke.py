@@ -70,7 +70,22 @@ async def run(config, tmp, distribution=None):
     text = '茶铺风铃5826每周二休息。'
     first = json.loads(await adapter.memory_store(event, text, '风铃5826', text, 'explicit'))
     assert first.get('persisted'), first
+    from astrbot.core import db_helper
+    from astrbot.core.conversation_mgr import ConversationManager
+    await db_helper.initialize()
+    manager = ConversationManager(db_helper)
+    origin = 'smoke-platform:FriendMessage:test-alice'
+    quote = '记住，不管在哪里，你都得叫我哥哥'
+    old = await manager.new_conversation(origin, content=[{'role': 'user', 'content': quote}])
+    address = json.loads(await adapter.memory_store(event, '用户要求在任何场合称他哥哥', '称呼偏好', quote, 'explicit'))
+    await manager.delete_conversation(origin, old)
+    assert await manager.get_conversation(origin, old) is None
+    assert await manager.new_conversation(origin) != old
     second = module.FishMemoryPlugin(None, host_settings)
+    scoped = module.bridge.scope_config(second.root, event)
+    assert '仍在' in module.bridge.check_receipt(scoped, address['items'][0]['id'])
+    checked = json.loads(await second.memory_recall(event, '叫我什么'))
+    assert address['items'][0]['id'] in [item['id'] for item in checked['items']], checked
     event.message_obj.type = MessageType.GROUP_MESSAGE
     event.message_obj.group_id = 'test-group'
     found = json.loads(await second.memory_recall(event, '风铃5826 每周休息日'))
