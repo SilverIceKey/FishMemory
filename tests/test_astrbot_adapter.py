@@ -35,10 +35,12 @@ class AstrBotTests(unittest.TestCase):
                     self.assertFalse(db.details(adapter.scope_config(root, event).scope, [ident]))
                 self.assertTrue(db.details(adapter.scope_config(root, Event()).scope, [ident]))
                 group = adapter.scope_config(root, Event(kind='GroupMessage', group='A'))
-                self.assertFalse(db.details(group.scope, [ident]))
+                self.assertTrue(db.details(group.scope, [ident]))
                 group_id = json.loads(adapter.store(group, '群约定', '主题', '群约定', 'explicit'))['items'][0]['id']
                 self.assertTrue(db.details(group.scope, [group_id]))
-                for other in [Event(), Event(kind='GroupMessage', group='B'), Event('bob', kind='GroupMessage', group='A')]:
+                for same in [Event(), Event(kind='GroupMessage', group='B')]:
+                    self.assertTrue(db.details(adapter.scope_config(root, same).scope, [group_id]))
+                for other in [Event('bob'), Event('bob', kind='GroupMessage', group='A')]:
                     self.assertFalse(db.details(adapter.scope_config(root, other).scope, [group_id]))
                 for event in [Event(''), Event(kind='GroupMessage'), Event(kind='OtherMessage')]:
                     with self.assertRaises(ValueError): adapter.scope_config(root, event)

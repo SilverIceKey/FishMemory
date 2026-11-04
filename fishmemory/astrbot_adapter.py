@@ -19,18 +19,15 @@ def model_settings(settings):
 def scope_config(root, event):
     kind = getattr(event.get_message_type(), 'value', None)
     group = event.get_group_id()
-    if kind == 'GroupMessage' and group and str(group).strip():
-        context = ('group', group)
-    elif kind == 'FriendMessage' and not group:
-        context = ()  # Preserve the existing private memory identity.
-    else:
+    if not ((kind == 'GroupMessage' and group and str(group).strip()) or
+            (kind == 'FriendMessage' and not group)):
         raise ValueError('chat_identity_unavailable')
     platform, bot, sender = event.get_platform_id(), event.get_self_id(), event.get_sender_id()
     if any(v is None or not str(v).strip() for v in (platform, bot, sender)):
         raise ValueError('identity_unavailable')
     def identity(*parts):
         return hashlib.sha256(json.dumps([str(p) for p in parts]).encode()).hexdigest()
-    return _build(root / 'scope.json', {'db': 'memory.sqlite', 'user_id': identity(platform, sender, *context),
+    return _build(root / 'scope.json', {'db': 'memory.sqlite', 'user_id': identity(platform, sender),
         'agent_id': identity(platform, bot)})
 
 

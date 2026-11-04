@@ -60,6 +60,8 @@ async def run(config, tmp, distribution=None):
     first = json.loads(await adapter.memory_store(event, text, '风铃5826', text, 'explicit'))
     assert first.get('persisted'), first
     second = module.FishMemoryPlugin(None, host_settings)
+    event.message_obj.type = MessageType.GROUP_MESSAGE
+    event.message_obj.group_id = 'test-group'
     found = json.loads(await second.memory_recall(event, '风铃5826 每周休息日'))
     assert first['items'][0]['id'] in {i['id'] for i in found['items']}, found
     print(f'PASS AstrBot native tool registration, authenticated model discovery ({selected}), persisted write and recall after plugin re-creation.')
