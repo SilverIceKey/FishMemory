@@ -1,8 +1,8 @@
 {
   "name": "@fishmemory/dsh-fishmemory",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "DSH Host plugin that archives committed user and assistant session events to a local FishMemory service.",
+  "description": "DSH guidance for FishMemory MCP tools with optional, separately enabled event archiving.",
   "type": "module",
   "exports": {
     ".": "./index.js",
@@ -30,4 +30,3 @@
     "test": "node --test \"test/*.test.mjs\""
   }
 }
-

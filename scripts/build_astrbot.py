@@ -12,6 +12,8 @@ if __name__ == '__main__':
     output = ROOT / 'dist' / 'astrbot_plugin_fishmemory.zip'
     output.parent.mkdir(exist_ok=True)
     with ZipFile(output, 'w', ZIP_DEFLATED) as archive:
+        # AstrBot 4.14.6 uses the very first member as the enclosing directory.
+        archive.writestr('FishMemory-release/', b'')
         for name in FILES:
-            archive.write(ROOT / name, 'FishMemory/' + name)
+            archive.write(ROOT / name, 'FishMemory-release/' + name)
     print(output)

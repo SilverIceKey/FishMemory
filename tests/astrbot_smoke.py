@@ -15,15 +15,27 @@ from types import SimpleNamespace
 ROOT = Path(__file__).resolve().parents[1]
 
 
-async def run(config, tmp):
+async def run(config, tmp, distribution=None):
     plugin = tmp / 'data/plugins/FishMemory'
-    plugin.mkdir(parents=True)
-    for filename in ('main.py', 'metadata.yaml', '_conf_schema.json'):
-        shutil.copy2(ROOT / filename, plugin / filename)
-    shutil.copytree(ROOT / 'fishmemory', plugin / 'fishmemory', ignore=shutil.ignore_patterns('__pycache__'))
     os.environ['ASTRBOT_ROOT'] = str(tmp)
     sys.path.insert(0, str(tmp))
-    module = importlib.import_module('data.plugins.FishMemory.main')
+    plugin.parent.mkdir(parents=True)
+    if distribution:
+        from astrbot.api.event import filter  # initialize the public SDK before its updater
+        from astrbot.core.star.updator import PluginUpdator
+        installer = PluginUpdator()
+        if distribution == '--repository':
+            plugin = Path(await asyncio.wait_for(installer.install('https://github.com/SilverIceKey/FishMemory'), timeout=40))
+        else:
+            archive = tmp / 'package.zip'
+            shutil.copy2(distribution, archive)
+            installer.unzip_file(str(archive), str(plugin))
+    else:
+        plugin.mkdir()
+        for filename in ('main.py', 'metadata.yaml', '_conf_schema.json'):
+            shutil.copy2(ROOT / filename, plugin / filename)
+        shutil.copytree(ROOT / 'fishmemory', plugin / 'fishmemory', ignore=shutil.ignore_patterns('__pycache__'))
+    module = importlib.import_module(f'data.plugins.{plugin.name}.main')
     from astrbot.core.platform.message_type import MessageType
     from astrbot.core.star import star_map
     assert star_map[module.__name__].star_cls_type is module.FishMemoryPlugin
@@ -53,4 +65,4 @@ if __name__ == '__main__':
     config = json.loads(path.read_text(encoding='utf-8-sig'))['model']
     config['api_key_file'] = str((path.parent / config['api_key_file']).resolve())
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp:
-        asyncio.run(run(config, Path(temp)))
+        asyncio.run(run(config, Path(temp), sys.argv[2] if len(sys.argv) > 2 else None))

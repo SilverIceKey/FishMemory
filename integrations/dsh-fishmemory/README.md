@@ -1,6 +1,8 @@
 # @fishmemory/dsh-fishmemory
 
-DSH 原生 Host 插件：订阅**已提交**的 `session/event`，把用户消息与主模型消息（可选工具结果）
+**0.2 安装默认值**：bundle 只启用 `guidance.js`。先接入 FishMemory MCP 的 `memory_store` 和 `memory_recall`；新安装不会全量归档。旧安装若显式启用了归档，需单独关闭。安装入口见仓库 `docs/17-安装与宿主接入.md`。
+
+以下为可选旧归档模块 `index.js` 的说明：订阅**已提交**的 `session/event`，把用户消息与主模型消息（可选工具结果）
 通过 HTTP `POST /v1/events` 归档到本机 FishMemory 服务。零 npm 运行时依赖，只用 `node:` 内置模块
 与全局 `fetch`（Node 24）。
 
@@ -177,4 +179,3 @@ node --test                                                       # 仓库根目
   `@deepseek-ai/dsh-session/README.md:45`; `@deepseek-ai/dsh-agent/README.md:52` —
   事件类型/消息位置与 `source.kind`。
 - `@deepseek-ai/dsh-tools/README.md:134` — 工具产生的附加 user-message 使用其它 `source.kind`（必须排除）。
-
