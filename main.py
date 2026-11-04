@@ -3,6 +3,7 @@ import asyncio
 import json
 from urllib.error import HTTPError
 
+from astrbot.api import logger
 from astrbot.api.event import AstrMessageEvent, filter
 from astrbot.api.provider import ProviderRequest
 from astrbot.api.star import Context, Star, StarTools
@@ -15,6 +16,8 @@ from .fishmemory.persona import PERSONA
 RECALL_POLICY = (
     '当用户要你回忆、核对或沿用他以前的偏好、约定时，回答前先调用 memory_recall，'
     '即使 AstrBot 附带的历史聊天里已有看似正确的答案。只查当前发言人的相关事实。'
+    '例如本人问“叫我什么”，或刚纠正称呼后说“再好好想想”，应查询本人的称呼偏好。'
+    '“主人”等权限身份及默认称谓不能证明用户选了这个称呼。其他群友不能替本人决定偏好。'
     '当前消息刚给出的事实、对上一句的普通追问和闲聊直接回应。'
     '若检索无直接证据，但本轮可见聊天里有用户本人的原话，可说明依据是聊天记录。'
 )
@@ -45,12 +48,17 @@ class FishMemoryPlugin(Star):
                 field['hint'] += ' 原选择已不在服务列表中，请重新选择。'
         field['options'] = list(dict.fromkeys(['', *ids, *([selected] if selected else [])]))
 
-    @filter.on_llm_request()
+    @filter.on_llm_request(priority=-10001)
     async def apply_memory_voice(self, event: AstrMessageEvent, req: ProviderRequest):
         try:
             bridge.scope_config(self.root, event)
         except ValueError:
             return
+        tools = getattr(req.func_tool, 'tools', None)
+        visibility = 'unknown' if not isinstance(tools, list) else str(any(
+            tool.name == 'memory_recall' for tool in tools)).lower()
+        logger.info('[FishMemory 0.2.5] chat=%s recall_in_hook_toolset=%s',
+                    event.get_message_type().value, visibility)
         prompt = req.system_prompt or ''
         for section in (PERSONA, RECALL_POLICY):
             if section not in prompt:
