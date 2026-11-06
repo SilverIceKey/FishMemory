@@ -10,6 +10,8 @@ from . import model_endpoint as backend, observe
 from .config import _build
 from .core import Store, LocalModel, recall
 from .writing import store_memory
+from . import embedding, summary_index
+from .summary_retrieval import recall_summary
 
 
 def model_settings(settings):
@@ -57,9 +59,67 @@ def check_receipt(config, ident):
     return '当前账号的这条记录仍在数据库中。' if present else '当前账号范围内未找到这条记录。'
 
 
-def store(config, content, topic, source_quote, mode):
+def store(config, content, topic, source_quote, mode, *, original_text=None, message_id=''):
     return observe.audit_call(config, content, lambda: json.dumps(
-        store_memory(config, content, topic, source_quote, mode)), tool='memory_store', source='astrbot')
+        store_memory(config, content, topic, source_quote, mode,
+                     original_text=original_text, message_id=message_id)), tool='memory_store', source='astrbot')
+
+
+def index_pending(root, settings):
+    """One bounded background batch; survives reloads through SQLite job state."""
+    config = _build(root / 'scope.json', {'db': 'memory.sqlite'})
+    if not config.db.is_file():
+        return
+    db = None
+    started = time.monotonic()
+    model = None
+    try:
+        db = Store(config.db)
+        summary_index.seed(db)
+        pending = db.db.execute("SELECT 1 FROM memory_chunks WHERE status!='ready' AND retry_at<=? LIMIT 1",
+                                (time.time(),)).fetchone()
+        try:
+            embedder = embedding.configured(settings)
+        except (ValueError, KeyError, TypeError):
+            embedder = None
+        vector_pending = embedder and db.db.execute('''SELECT 1 FROM memory_chunks WHERE status='ready'
+            AND (vector IS NULL OR vector_model!=?) AND vector_retry_at<=? LIMIT 1''',
+            (embedder.signature, time.time())).fetchone()
+        if not pending and not vector_pending:
+            return
+        model_config = model_settings(settings)
+        if pending:
+            model_config['model'] = backend.choose(backend.models(model_config), settings.get('modelId', '').strip())
+        else:
+            model_config['model'] = settings.get('modelId', '')
+        model = LocalModel(model_config)
+        count = summary_index.process_pending(db, model, embedder, limit=2,
+                                              deadline=time.monotonic() + 10)
+        observe.append_jsonl(config.service['call_log'], {'source': 'astrbot_index',
+            'time': time.time(), 'processed': count, 'calls': model.calls,
+            'elapsed_ms': round((time.monotonic() - started) * 1000, 2)})
+    except (OSError, ValueError, TypeError, KeyError, IndexError, sqlite3.Error) as error:
+        observe.append_jsonl(config.service['call_log'], {'source': 'astrbot_index',
+            'time': time.time(), 'error': type(error).__name__,
+            'calls': model.calls if model else []})
+    finally:
+        if db is not None:
+            db.close()
+
+
+def index_status(config, settings):
+    if not config.db.is_file():
+        return '当前账号还没有记忆数据库。'
+    db = Store(config.db)
+    try:
+        counts = summary_index.stats(db, config.scope)
+    finally:
+        db.close()
+    mode = '摘要全文检索 + 可选向量' if settings.get('embeddingBaseUrl', '').strip() else '摘要全文检索（无需安装向量模型）'
+    return (f"当前检索：{mode}\n记忆 {counts['records']} 条，已建立基础索引 {counts['indexed_records']} 条。\n"
+            f"摘要片段：完成 {counts.get('ready', 0)}，待处理 {counts.get('pending', 0)}，"
+            f"等待重试 {counts.get('failed', 0)}；已有向量 {counts['vectors']}，向量失败待重试 {counts['vector_failed']}。\n"
+            '索引在后台自动补建，原文和旧记忆不会被改写。')
 
 
 def read(config, settings, query):
@@ -74,7 +134,15 @@ def read(config, settings, query):
             model = model_settings(settings)
             model['model'] = backend.choose(backend.models(model), settings.get('modelId', '').strip())
             db = Store(config.db)
-            result = recall(db, config.scope, query, LocalModel(model), deadline_s=config.service['recall_deadline_s'])
+            if settings.get('retrievalMode', 'summary') == 'legacy':
+                result = recall(db, config.scope, query, LocalModel(model), deadline_s=config.service['recall_deadline_s'])
+            else:
+                try:
+                    embedder = embedding.configured(settings)
+                except (ValueError, KeyError, TypeError):
+                    embedder = None
+                result = recall_summary(db, config.scope, query, LocalModel(model), embedder,
+                                        deadline_s=config.service['recall_deadline_s'])
             observe.append_jsonl(config.service['call_log'], observe.recall_log('astrbot', config, result,
                 round((time.monotonic()-start)*1000, 2), len(query)))
             return json.dumps(observe.recall_response(result), ensure_ascii=False)
@@ -91,3 +159,4 @@ def read(config, settings, query):
                 db.close()
         return json.dumps({'status': 'error', 'items': [], 'error': code})
     return observe.audit_call(config, query, operation, source='astrbot')
+

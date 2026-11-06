@@ -48,6 +48,8 @@ def recall_log(source, config, result, elapsed_ms, query_chars):
         'error': result.get('error'),
         'elapsed_ms': elapsed_ms,
         'calls': result.get('calls', []),
+        'candidate_ids': result.get('candidate_ids', []),
+        'warnings': result.get('warnings', []),
     }
 
 
@@ -114,3 +116,4 @@ def audit_call(config, query, operation, tool='memory_recall', source='mcp'):
                           'response_sha256': digest,
                           'audit_logged': logged_start and logged_end}
     return json.dumps(body, ensure_ascii=False)
+

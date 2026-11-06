@@ -1,6 +1,7 @@
 """AstrBot repository-plugin entry point (4.14.6); no MCP install required."""
 import asyncio
 import json
+import sqlite3
 from urllib.error import HTTPError
 
 from astrbot.api import logger
@@ -28,6 +29,8 @@ class FishMemoryPlugin(Star):
         super().__init__(context)
         self.settings = config
         self.root = StarTools.get_data_dir('astrbot_plugin_fishmemory')
+        self._index_stop = asyncio.Event()
+        self._index_task = None
 
     async def initialize(self):
         # AstrBot 4.14.6 reloads the plugin after saving configuration and
@@ -47,6 +50,38 @@ class FishMemoryPlugin(Star):
             if selected and selected not in ids:
                 field['hint'] += ' 原选择已不在服务列表中，请重新选择。'
         field['options'] = list(dict.fromkeys(['', *ids, *([selected] if selected else [])]))
+        if self._index_task is None or self._index_task.done():
+            self._index_stop.clear()
+            self._index_task = asyncio.create_task(self._index_loop())
+
+    async def _index_loop(self):
+        while not self._index_stop.is_set():
+            try:
+                await asyncio.to_thread(bridge.index_pending, self.root, dict(self.settings))
+            except Exception as error:
+                logger.warning('[FishMemory] index batch failed: %s', type(error).__name__)
+            try:
+                await asyncio.wait_for(self._index_stop.wait(), timeout=10)
+            except asyncio.TimeoutError:
+                pass
+
+    async def terminate(self):
+        self._index_stop.set()
+        if self._index_task is not None:
+            await self._index_task
+
+    @filter.command('fishmemory_index')
+    async def check_index(self, event: AstrMessageEvent):
+        """在私聊查看本账号的旧记忆补建、摘要和向量状态。"""
+        if getattr(event.get_message_type(), 'value', None) != 'FriendMessage' or event.get_group_id():
+            yield event.plain_result('请在私聊中查看自己的记忆索引状态。')
+            return
+        try:
+            config = bridge.scope_config(self.root, event)
+            result = await asyncio.to_thread(bridge.index_status, config, self.settings)
+        except (ValueError, OSError, sqlite3.Error):
+            result = '无法读取当前账号的记忆索引状态。'
+        yield event.plain_result(result)
 
     @filter.on_llm_request(priority=-10001)
     async def apply_memory_voice(self, event: AstrMessageEvent, req: ProviderRequest):
@@ -57,7 +92,7 @@ class FishMemoryPlugin(Star):
         tools = getattr(req.func_tool, 'tools', None)
         visibility = 'unknown' if not isinstance(tools, list) else str(any(
             tool.name == 'memory_recall' for tool in tools)).lower()
-        logger.info('[FishMemory 0.2.7] chat=%s recall_in_hook_toolset=%s',
+        logger.info('[FishMemory 0.3.0] chat=%s recall_in_hook_toolset=%s',
                     event.get_message_type().value, visibility)
         prompt = req.system_prompt or ''
         for section in (PERSONA, RECALL_POLICY):
@@ -109,7 +144,12 @@ class FishMemoryPlugin(Star):
             config = bridge.scope_config(self.root, event)
         except ValueError as exc:
             return json.dumps({'status': 'error', 'error': str(exc), 'persisted': False})
-        return await asyncio.to_thread(bridge.store, config, content, topic, source_quote, mode)
+        # AstrBot 4.14.6 public get_message_str; do not use a model-generated
+        # paraphrase as the original. Earlier-message quotes remain unverified.
+        original = event.get_message_str()
+        message_id = getattr(event.message_obj, 'message_id', '')
+        return await asyncio.to_thread(bridge.store, config, content, topic, source_quote, mode,
+                                       original_text=original, message_id=message_id)
 
     @filter.llm_tool(name='memory_recall')
     async def memory_recall(self, event: AstrMessageEvent, query: str):
@@ -123,3 +163,4 @@ class FishMemoryPlugin(Star):
         except ValueError as exc:
             return json.dumps({'status': 'error', 'items': [], 'error': str(exc)})
         return await asyncio.to_thread(bridge.read, config, self.settings, query)
+

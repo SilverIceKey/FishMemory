@@ -25,5 +25,50 @@
     "options": [
       ""
     ]
+  },
+  "retrievalMode": {
+    "type": "string",
+    "description": "检索方式",
+    "hint": "summary：原文保留，摘要匹配，不按主题硬过滤；legacy：回退到旧检索。",
+    "default": "summary",
+    "options": [
+      "summary",
+      "legacy"
+    ]
+  },
+  "embeddingBaseUrl": {
+    "type": "string",
+    "description": "向量接口地址（可选）",
+    "hint": "留空即使用零额外依赖的摘要全文检索。填写本地 OpenAI 兼容 /v1 接口；需自行部署 embedding 模型，不会自动下载。",
+    "default": ""
+  },
+  "embeddingModel": {
+    "type": "string",
+    "description": "向量模型 ID（可选）",
+    "hint": "接口部署的精确模型 ID，例如 BAAI/bge-small-zh-v1.5。不要填写 qwen3.5-0.8b 聊天模型。",
+    "default": "BAAI/bge-small-zh-v1.5"
+  },
+  "embeddingApiKey": {
+    "type": "string",
+    "description": "向量接口 API Key（可选）",
+    "default": ""
+  },
+  "embeddingVersion": {
+    "type": "string",
+    "description": "向量索引版本",
+    "hint": "同名模型替换权重后修改此值，后台自动重建向量；原文不变。",
+    "default": "1"
+  },
+  "embeddingQueryPrefix": {
+    "type": "string",
+    "description": "向量查询前缀",
+    "hint": "默认用于 BGE 中文检索；使用 E5 时改为 query: 加空格，按模型要求设置。",
+    "default": "为这个句子生成表示以用于检索相关文章："
+  },
+  "embeddingDocumentPrefix": {
+    "type": "string",
+    "description": "向量摘要前缀",
+    "hint": "BGE 默认留空；使用 E5 时改为 passage: 加空格。",
+    "default": ""
   }
 }

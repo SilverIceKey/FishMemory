@@ -6,6 +6,11 @@
 
 ## 安装
 
+**v0.3.0（AstrBot）**：原文保持不变，0.8B 在后台生成检索摘要；默认使用 SQLite 摘要全文匹配，
+不再按 topic 硬过滤。更新后自动分批补建旧记忆索引，不新增 Python/向量库依赖。
+可选配置本地 embedding 接口，向量也保存在原来的 `memory.sqlite`；不配置时照常使用摘要检索。
+私聊 `/fishmemory_index` 查看进度。升级步骤和边界见 [0.3 升级说明](docs/18-摘要索引与升级.md)。
+
 **AstrBot 原生插件**：从仓库链接安装 `https://github.com/SilverIceKey/FishMemory`，在插件设置填写 llama.cpp 的 `baseUrl` 与 API Key（或密钥文件）。单模型自动选择；管理员可用 `/fishmemory_models` 检查连接。
 
 **其他宿主**：安装 Python 包后可生成 Codex、Claude Code、Hermes、OpenCode 等的 MCP 配置和 Skill。完整操作、模型配置、测试范围见 [安装与宿主接入](docs/17-安装与宿主接入.md)。
@@ -94,3 +99,4 @@
 - 详细契约、安装方式（desktop profile 用 `$DSH_HOME/cordis.patch.yml` + 绝对路径，已验证）、实测结果和**未完成门禁**（持久归档队列/补扫、多用户鉴权、线上成本 A/B）见 `docs/16-DSH原生插件集成.md`。
 
 DSH 版本更正：本轮安装包实测为 `0.2.1-rc.5`；docs/14 中记录的 `0.2.1-rc.3` 是上一工作包的旧安装版本。
+

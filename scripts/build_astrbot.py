@@ -4,8 +4,9 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ['main.py', 'metadata.yaml', '_conf_schema.json', 'README.md',
-         'docs/17-安装与宿主接入.md', *['fishmemory/' + name + '.py' for name in
-         ('__init__', 'astrbot_adapter', 'persona', 'model_endpoint', 'writing', 'config', 'observe', 'core')]]
+         'docs/17-安装与宿主接入.md', 'docs/18-摘要索引与升级.md', *['fishmemory/' + name + '.py' for name in
+         ('__init__', 'astrbot_adapter', 'persona', 'model_endpoint', 'writing', 'config', 'observe', 'core',
+          'summary_index', 'summary_retrieval', 'embedding')]]
 
 
 if __name__ == '__main__':
@@ -17,3 +18,4 @@ if __name__ == '__main__':
         for name in FILES:
             archive.write(ROOT / name, 'FishMemory-release/' + name)
     print(output)
+

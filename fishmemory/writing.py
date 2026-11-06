@@ -7,7 +7,8 @@ from datetime import datetime, timezone
 from .core import Store, terms
 
 
-def store_memory(config, content, topic, source_quote, mode='autonomous'):
+def store_memory(config, content, topic, source_quote, mode='autonomous', *,
+                 original_text=None, message_id=''):
     fields = ((content, 1200), (topic, 100), (source_quote, 4000))
     if any(not isinstance(v, str) or not v.strip() or len(v) > n for v, n in fields):
         return {'status': 'error', 'error': 'invalid_memory', 'items': []}
@@ -36,6 +37,11 @@ def store_memory(config, content, topic, source_quote, mode='autonomous'):
                 store.db.execute('INSERT INTO memory_sources VALUES (?,?,?,?,?)',
                     (*config.scope, ident, source_quote, mode))
                 status = 'stored'
+            # Host message is additional source evidence, never a replacement
+            # for legacy content/quote. Bind it in the same durable transaction.
+            if isinstance(original_text, str) and source_quote in original_text:
+                store.db.execute('INSERT OR IGNORE INTO memory_originals VALUES (?,?,?,?,?)',
+                    (*config.scope, ident, original_text, str(message_id or '')))
         # Only reached after COMMIT has succeeded.
         return {'status': status, 'persisted': True, 'items': [{'id': ident}],
                 'reply_policy': 'brief_confirmation' if mode == 'explicit' else 'silent',
@@ -45,3 +51,4 @@ def store_memory(config, content, topic, source_quote, mode='autonomous'):
     finally:
         if store is not None:
             store.close()
+

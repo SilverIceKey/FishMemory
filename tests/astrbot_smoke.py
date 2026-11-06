@@ -68,6 +68,7 @@ async def run(config, tmp, distribution=None):
     await adapter.apply_memory_voice(event, request)
     assert request.system_prompt == '原有人格\n\n' + module.PERSONA + '\n\n' + module.RECALL_POLICY
     text = '茶铺风铃5826每周二休息。'
+    event.message_str = text
     first = json.loads(await adapter.memory_store(event, text, '风铃5826', text, 'explicit'))
     assert first.get('persisted'), first
     from astrbot.core import db_helper
@@ -76,6 +77,7 @@ async def run(config, tmp, distribution=None):
     manager = ConversationManager(db_helper)
     origin = 'smoke-platform:FriendMessage:test-alice'
     quote = '记住，不管在哪里，你都得叫我哥哥'
+    event.message_str = quote
     old = await manager.new_conversation(origin, content=[{'role': 'user', 'content': quote}])
     address = json.loads(await adapter.memory_store(event, '用户要求在任何场合称他哥哥', '称呼偏好', quote, 'explicit'))
     await manager.delete_conversation(origin, old)
@@ -92,6 +94,8 @@ async def run(config, tmp, distribution=None):
     found = json.loads(await second.memory_recall(event, '风铃5826 每周休息日'))
     assert first['items'][0]['id'] in {i['id'] for i in found['items']}, found
     print(f'PASS AstrBot native tool registration, authenticated model discovery ({selected}), persisted write and recall after plugin re-creation.')
+    await adapter.terminate()
+    await second.terminate()
 
 
 if __name__ == '__main__':
@@ -100,3 +104,4 @@ if __name__ == '__main__':
     config['api_key_file'] = str((path.parent / config['api_key_file']).resolve())
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp:
         asyncio.run(run(config, Path(temp), sys.argv[2] if len(sys.argv) > 2 else None))
+

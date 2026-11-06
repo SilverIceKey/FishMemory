@@ -35,11 +35,14 @@ class Store:
             CREATE TABLE IF NOT EXISTS tombstones (
               user_id TEXT, agent_id TEXT, event_id TEXT,
               PRIMARY KEY(user_id,agent_id,event_id));
-            PRAGMA user_version=1;
             CREATE TABLE IF NOT EXISTS memory_sources (
               user_id TEXT, agent_id TEXT, event_id TEXT, source_quote TEXT, mode TEXT,
               PRIMARY KEY(user_id,agent_id,event_id));
             ''')
+            if self.db.execute('PRAGMA user_version').fetchone()[0] == 0:
+                self.db.execute('PRAGMA user_version=1')
+            from .summary_index import ensure_schema
+            ensure_schema(self)
         except BaseException:
             # A busy/locked database must not leak an open connection; the
             # service turns this into 503 database_busy.
@@ -85,10 +88,9 @@ class Store:
             r = self.db.execute('SELECT event_id AS id,topic,text,occurred_at AS time,state FROM events WHERE user_id=? AND agent_id=? AND event_id=?', (*scope, ident)).fetchone()
             if r:
                 d = dict(r)
-                d['text'] = d['text'][:1200]
                 source = self.db.execute('SELECT source_quote,mode FROM memory_sources WHERE user_id=? AND agent_id=? AND event_id=?', (*scope, ident)).fetchone()
                 if source:
-                    d['source_quote'] = source['source_quote'][:1200]
+                    d['source_quote'] = source['source_quote']
                     d['source_verification'] = 'caller_supplied'
                     d['storage_mode'] = source['mode']
                 out.append(d)
@@ -129,7 +131,8 @@ class LocalModel:
         remaining = deadline-time.monotonic()
         if remaining <= 0:
             raise TimeoutError('retrieval deadline')
-        body = {'model':self.config['model'], 'temperature':0, 'max_tokens':256,
+        body = {'model':self.config['model'], 'temperature':0,
+                'max_tokens':384 if 'summary' in output_schema['properties'] else 256,
                 'chat_template_kwargs':{'enable_thinking':False},
                 'messages':[{'role':'system','content':instruction},
                             {'role':'user','content':json.dumps(data, ensure_ascii=False)}],
@@ -278,3 +281,4 @@ def recall(store, scope, query, model, max_rounds=2, deadline_s=20):
                   calls=model.calls[offset:], elapsed_ms=round((time.monotonic()-start)*1000, 2),
                   trace_id=str(uuid.uuid4()))
     return result
+

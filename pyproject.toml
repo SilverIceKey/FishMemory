@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fishmemory-local"
-version = "0.2.0"
+version = "0.3.0"
 description = "Local durable memory with MCP read/write tools"
 requires-python = ">=3.11"
 dependencies = ["mcp==1.26.0"]
@@ -19,3 +19,4 @@ include = ["fishmemory*"]
 
 [tool.setuptools.package-data]
 fishmemory = ["assets/fishmemory/SKILL.md"]
+
