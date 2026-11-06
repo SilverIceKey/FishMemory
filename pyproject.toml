@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fishmemory-local"
-version = "0.3.0"
+version = "0.3.1"
 description = "Local durable memory with MCP read/write tools"
 requires-python = ">=3.11"
 dependencies = ["mcp==1.26.0"]

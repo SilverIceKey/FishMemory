@@ -81,6 +81,12 @@ class LifecycleTests(unittest.TestCase):
                     complete(plugin.initialize())
                     complete(plugin.initialize())
                     self.assertEqual(len(tasks),1)
+                    request=types.SimpleNamespace(system_prompt='existing persona',
+                        func_tool=types.SimpleNamespace(tools=[types.SimpleNamespace(name='memory_recall')]))
+                    complete(plugin.apply_memory_voice(Event(),request))
+                    complete(plugin.apply_memory_voice(Event(),request))
+                    self.assertEqual(request.system_prompt,'\n\n'.join(
+                        ('existing persona',module.PERSONA,module.RECALL_POLICY,module.STORE_POLICY)))
                     saved=json.loads(complete(plugin.memory_store(Event(),'晚上避免咖啡','错主题','我晚上不喝咖啡。','explicit')))
                     cfg=module.bridge.scope_config(root,Event())
                     db=Store(cfg.db)

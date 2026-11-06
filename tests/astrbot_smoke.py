@@ -66,7 +66,7 @@ async def run(config, tmp, distribution=None):
     request = ProviderRequest(system_prompt='原有人格')
     await adapter.apply_memory_voice(event, request)
     await adapter.apply_memory_voice(event, request)
-    assert request.system_prompt == '原有人格\n\n' + module.PERSONA + '\n\n' + module.RECALL_POLICY
+    assert request.system_prompt == '\n\n'.join(('原有人格', module.PERSONA, module.RECALL_POLICY, module.STORE_POLICY))
     text = '茶铺风铃5826每周二休息。'
     event.message_str = text
     first = json.loads(await adapter.memory_store(event, text, '风铃5826', text, 'explicit'))
